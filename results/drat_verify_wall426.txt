@@ -1,0 +1,5 @@
+# release binary, --proof-binary, drat-trim (git 2e3b2dc)
+w400_2.cnf UNSAT solve 41.398640108s proof 998M (text format, both cores busy) check 96.958642149s -> s VERIFIED
+(w400_2 with forced warm-up:)
+w400_2.cnf UNSAT solve 53.587471286s proof 1.3G check 108.587098888s -> s VERIFIED
+w500_2.cnf UNSAT solve 239.127946168s proof 2.2G check 306.598851208s -> s VERIFIED

@@ -1,0 +1,2 @@
+258 files: 0 problems (wrong answer or SAT/UNSAT clash)
+  parat  {'SAT': 179, 'UNSAT': 72, 'TIMEOUT': 7}  total time 283.5 s

@@ -1,0 +1,73 @@
+# 72 files Parat answered UNSAT in the 258-file check; lab Parat --proof-binary, 120 s limit, then drat-trim
+c500_103.cnf UNSAT solve 16.639409654s proof 23M check 25.753671191s -> s VERIFIED
+c500_108.cnf UNSAT solve 11.989354163s proof 18M check 17.070681728s -> s VERIFIED
+u150_0.cnf UNSAT solve .054959435s proof 68K check .103459932s -> s VERIFIED
+u250_6.cnf UNSAT solve .465169771s proof 3.0M check .713373547s -> s VERIFIED
+u200_7.cnf UNSAT solve .287293843s proof 1.1M check .379383690s -> s VERIFIED
+u250_4.cnf UNSAT solve .543464482s proof 3.0M check .833833515s -> s VERIFIED
+u100_1.cnf UNSAT solve .013410451s proof 8.0K check .075616899s -> s VERIFIED
+u150_13.cnf UNSAT solve .030758110s proof 40K check .099149838s -> s VERIFIED
+u150_16.cnf UNSAT solve .038635420s proof 52K check .099419381s -> s VERIFIED
+u100_5.cnf UNSAT solve .012491152s proof 4.0K check .074929167s -> s VERIFIED
+u150_14.cnf UNSAT solve .029678131s proof 36K check .100773834s -> s VERIFIED
+u200_3.cnf UNSAT solve .155222429s proof 356K check .206139782s -> s VERIFIED
+u100_11.cnf UNSAT solve .015629834s proof 8.0K check .102543312s -> s VERIFIED
+u100_4.cnf UNSAT solve .017588244s proof 4.0K check .106062288s -> s VERIFIED
+u150_6.cnf UNSAT solve .031343991s proof 40K check .093087628s -> s VERIFIED
+u200_1.cnf UNSAT solve .166489159s proof 352K check .221051084s -> s VERIFIED
+u200_6.cnf UNSAT solve .272902261s proof 912K check .282129701s -> s VERIFIED
+u100_6.cnf UNSAT solve .014460828s proof 8.0K check .080440477s -> s VERIFIED
+u200_5.cnf UNSAT solve .154548112s proof 360K check .231618899s -> s VERIFIED
+fprime30.cnf UNSAT solve 5.736396288s proof 8.3M check 15.637658258s -> s VERIFIED
+miter_add256.cnf UNSAT solve .269477485s proof 244K check .138651137s -> s VERIFIED
+fprime32.cnf UNSAT solve 12.231859678s proof 15M check 33.653607591s -> s VERIFIED
+fprime31.cnf UNSAT solve 9.682951641s proof 11M check 21.931022732s -> s VERIFIED
+miter_add128.cnf UNSAT solve .181285748s proof 128K check .114916483s -> s VERIFIED
+fprime29.cnf UNSAT solve 4.234817307s proof 5.5M check 9.552317512s -> s VERIFIED
+cachet-grid-networks__90-50-2-q.cnf UNSAT solve .085467497s proof 20K check .102184567s -> s VERIFIED
+cachet-grid-networks__90-50-7-q.cnf UNSAT solve .021682927s proof 12K check .091892418s -> s VERIFIED
+hard_unsat_3.cnf UNSAT solve 1.319179880s proof 11M check 2.230462251s -> s VERIFIED
+hard_unsat_2.cnf UNSAT solve 1.183626948s proof 7.6M check 1.659251726s -> s VERIFIED
+php10.cnf UNSAT solve 27.637509639s proof 49M check 29.949514111s -> s VERIFIED
+php8.cnf UNSAT solve .245432908s proof 492K check .255510430s -> s VERIFIED
+rand300_9995000.cnf UNSAT solve 1.187236198s proof 8.5M check 1.760714404s -> s VERIFIED
+rand300_9995001.cnf UNSAT solve 1.055886415s proof 7.3M check 1.513045423s -> s VERIFIED
+hard_unsat_5.cnf UNSAT solve 1.241007919s proof 12M check 2.447259791s -> s VERIFIED
+parity250.cnf UNSAT solve .083407510s proof 12K check .074752372s -> s VERIFIED
+rand200_32400.cnf UNSAT solve .272874134s proof 1.1M check .376648600s -> s VERIFIED
+col250_4.8.cnf UNSAT solve .018721463s proof 28K check .096959756s -> s VERIFIED
+php9.cnf UNSAT solve 1.933062774s proof 4.3M check 2.102082137s -> s VERIFIED
+parity150.cnf UNSAT solve .017821431s proof 4.0K check .083044401s -> s VERIFIED
+randsat300_777.cnf UNSAT solve 2.501429097s proof 26M check 5.603625085s -> s VERIFIED
+hard_unsat_4.cnf UNSAT solve 1.675494891s proof 16M check 3.350300936s -> s VERIFIED
+col300_4.7.cnf UNSAT solve .226220823s proof 392K check .293614070s -> s VERIFIED
+dubois29.cnf UNSAT solve .010958582s proof 8.0K check .071121122s -> s VERIFIED
+dubois30.cnf UNSAT solve .010883955s proof 8.0K check .074656114s -> s VERIFIED
+dubois23.cnf UNSAT solve .012389481s proof 8.0K check .083484264s -> s VERIFIED
+dubois20.cnf UNSAT solve .010693853s proof 4.0K check .078844628s -> s VERIFIED
+aim-200-2_0-no-1.cnf UNSAT solve .011020672s proof 4.0K check .074573558s -> s VERIFIED
+dubois27.cnf UNSAT solve .013405102s proof 8.0K check .082958807s -> s VERIFIED
+dubois28.cnf UNSAT solve .012476746s proof 8.0K check .074054596s -> s VERIFIED
+aim-200-2_0-no-3.cnf UNSAT solve .010240520s proof 4.0K check .073529621s -> s VERIFIED
+dubois24.cnf UNSAT solve .009527997s proof 4.0K check .078546885s -> s VERIFIED
+aim-200-1_6-no-1.cnf UNSAT solve .011790920s proof 4.0K check .071579248s -> s VERIFIED
+aim-200-1_6-no-3.cnf UNSAT solve .010813182s proof 4.0K check .075558222s -> s VERIFIED
+dubois26.cnf UNSAT solve .010622719s proof 8.0K check .072022487s -> s VERIFIED
+dubois50.cnf UNSAT solve .012871449s proof 12K check .071714843s -> s VERIFIED
+aim-200-1_6-no-2.cnf UNSAT solve .009999598s proof 4.0K check .080195061s -> s VERIFIED
+aim-200-2_0-no-2.cnf UNSAT solve .013778190s proof 4.0K check .106332912s -> s VERIFIED
+aim-200-1_6-no-4.cnf UNSAT solve .026108887s proof 4.0K check .072674544s -> s VERIFIED
+dubois21.cnf UNSAT solve .010350527s proof 4.0K check .077428506s -> s VERIFIED
+dubois22.cnf UNSAT solve .013960620s proof 4.0K check .098596509s -> s VERIFIED
+aim-200-2_0-no-4.cnf UNSAT solve .013552645s proof 4.0K check .071402172s -> s VERIFIED
+dubois25.cnf UNSAT solve .010997880s proof 8.0K check .074177781s -> s VERIFIED
+miter_mult16.cnf s UNKNOWN (time) 121.749664565s
+miter_mult8.cnf UNSAT solve 7.576579344s proof 9.3M check 16.935905020s -> s VERIFIED
+factor_prime30.cnf UNSAT solve 5.619039604s proof 8.2M check 13.736492342s -> s VERIFIED
+miter_mult24.cnf s UNKNOWN (time) 121.665455043s
+miter_mult12.cnf s UNKNOWN (time) 121.486899574s
+miter_mult10.cnf s UNKNOWN (time) 121.388171594s
+miter_add64.cnf UNSAT solve .078140110s proof 64K check .086097346s -> s VERIFIED
+factor_prime31.cnf UNSAT solve 8.632144177s proof 11M check 22.522981062s -> s VERIFIED
+miter_add32.cnf UNSAT solve .024376162s proof 32K check .096289874s -> s VERIFIED
+miter_mult32.cnf s UNKNOWN (time) 121.222017920s

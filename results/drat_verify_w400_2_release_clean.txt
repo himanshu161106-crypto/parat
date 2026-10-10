@@ -1,0 +1,6 @@
+Parat: s UNSATISFIABLE (34.688040255 s), proof 450M
+c 3640513 of 5673919 lemmas in core using 200036418 resolution steps
+c 0 RAT lemmas in core; 2914161 redundant literals in core lemmas
+s VERIFIED
+c verification time: 62.380 seconds
+check time 62.433886492 s

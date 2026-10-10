@@ -1,0 +1,26 @@
+Parat Evaluation License
+Copyright (c) 2026 Himanshu. All rights reserved.
+
+The Parat binary in this repository ("the Software") is licensed, not sold.
+
+1. Free use. You may download and run the Software, free of charge, for:
+   (a) personal use,
+   (b) academic research and teaching, including publishing benchmark results obtained with it, and
+   (c) evaluating whether you want a commercial license.
+
+2. Commercial use needs a paid license. Any other use needs a separate written commercial license from the
+   copyright holder. This includes use inside a product or service, use in a company's internal production work, and
+   offering the Software as part of a paid service.
+   To ask for one, open a GitHub issue in this repository titled "Commercial license".
+
+3. Restrictions. You may not:
+   (a) decompile, disassemble or reverse engineer the Software, except where the law allows it despite this term;
+   (b) redistribute modified versions of the Software;
+   (c) remove this license or the copyright notice.
+   You may redistribute the unmodified Software together with this license, free of charge.
+
+4. No warranty. The Software is provided "as is", without warranty of any kind. The copyright holder is not liable
+   for any claim, damages or other liability arising from its use.
+
+The scripts in verify/ and the benchmark files in benchmarks/ may be used, copied and changed by anyone for any
+purpose.
