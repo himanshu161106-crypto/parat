@@ -44,7 +44,7 @@ s VERIFIED                                        # 62 s, independent checker
 Linux x86-64; the binary is static and needs nothing else. On Windows use WSL; there is no macOS build yet.
 
 ```bash
-git clone <this repo> parat && cd parat
+git clone https://github.com/himanshu161106-crypto/parat && cd parat
 chmod +x bin/parat-linux-x86_64
 
 # 1. solve a file and check the answer yourself
