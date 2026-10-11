@@ -1,7 +1,7 @@
-# Parat v1.1 — multiplier circuits with certificates
+# Update, Oct 11 2026 — multiplier circuits with certificates (part of v1.0, binary in bin/)
 
-**Download:** `bin/parat-linux-x86_64` (static Linux x86-64; on Windows use WSL). Everything in v1.0 still works the
-same way.
+**Download:** `bin/parat-linux-x86_64` from the repo (static Linux x86-64; on Windows use WSL). Everything else
+works the same way.
 
 ## New
 - **Multiplier mode:** `parat circuit.aag 1 [time_limit_s]`. It proves that a gate-level multiplier (ASCII AIGER, the

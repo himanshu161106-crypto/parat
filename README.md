@@ -33,7 +33,7 @@ s VERIFIED                                        # 62 s, independent checker
   - Clearly ahead of probSAT: faster on 13 of 16 hard files, p = 0.01.
   - Level with YalSAT, with a small lead that is not statistically proven.
   - Every one of thousands of answers was checked clause by clause.
-- **New in v1.1: multiplier circuits, proved correct with a certificate.**
+- **New (Oct 11 update): multiplier circuits, proved correct with a certificate.**
   - `parat mult.aag 1 300 --pac cert` proves that a gate-level multiplier really computes a × b, or prints an input
     where it does not.
   - The certificate is checked by pacheck2 (JKU), the checker used for AMulet2's certificates.
@@ -74,7 +74,7 @@ bash verify/verify_multiplier.sh benchmarks/multipliers/booth64.aag pacheck2/pac
   - Proof files are large: about 450 MB for n=400 and 2.2 GB for n=500 (binary).
 - Proof mode uses one core and only methods whose steps can be written as DRAT. See [Limits](#limits).
 
-**Multiplier mode (v1.1):** `parat circuit.aag 1 [time_limit_s] [--pac prefix]`
+**Multiplier mode (Oct 11 update):** `parat circuit.aag 1 [time_limit_s] [--pac prefix]`
 - Input: an ASCII AIGER file (`.aag`, as used by AMulet2; convert a binary `.aig` with `aigtoaig`). The first half of
   the inputs is a (least significant bit first), the second half b, the outputs are the product bits.
 - Output: `s CORRECT MULTIPLIER` or `s INCORRECT MULTIPLIER` with a counterexample (a, b, circuit output, a × b).
@@ -166,7 +166,7 @@ measured with 10 new seeds.
   - 42 small industrial files: Parat 24.8 s total vs Kissat 94.9 s, fastest on 33.
   - Weak spot: factoring circuits, where Kissat is about 2.5x faster (33-bit: 21.9 s vs 8.9 s).
 
-### 5. Multiplier circuits (new in v1.1)
+### 5. Multiplier circuits (new, Oct 11 update)
 
 **The question:** does this gate-level circuit compute a × b for every input? (For 128-bit inputs that is 2^256
 cases, so testing cannot answer it.)

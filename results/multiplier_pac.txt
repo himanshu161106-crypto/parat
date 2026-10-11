@@ -1,4 +1,4 @@
-# Parat v1.1 multiplier proofs + PAC certificates (release binary, 1 core, 2026-10-11)
+# Parat (Oct 11 update) multiplier proofs + PAC certificates (release binary, 1 core, 2026-10-11)
 # file | answer | Parat time incl. certificate | certificate size | pacheck2 result | pacheck2 time
 array16.aag | CORRECT MULTIPLIER | 0.02 s | 240K | TARGET CHECKED | 0.02 s
 array32.aag | CORRECT MULTIPLIER | 0.07 s | 1.2M | TARGET CHECKED | 0.10 s
