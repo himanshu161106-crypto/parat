@@ -1,0 +1,26 @@
+# Parat v1.1 multiplier proofs + PAC certificates (release binary, 1 core, 2026-10-11)
+# file | answer | Parat time incl. certificate | certificate size | pacheck2 result | pacheck2 time
+array16.aag | CORRECT MULTIPLIER | 0.02 s | 240K | TARGET CHECKED | 0.02 s
+array32.aag | CORRECT MULTIPLIER | 0.07 s | 1.2M | TARGET CHECKED | 0.10 s
+array64.aag | CORRECT MULTIPLIER | 0.27 s | 5.4M | TARGET CHECKED | 0.35 s
+booth16.aag | CORRECT MULTIPLIER | 0.03 s | 380K | TARGET CHECKED | 0.03 s
+booth16_buggy.aag | INCORRECT MULTIPLIER | 0.02 s | - | no certificate | - s
+booth32.aag | CORRECT MULTIPLIER | 0.09 s | 1.8M | TARGET CHECKED | 0.11 s
+booth64.aag | CORRECT MULTIPLIER | 0.40 s | 8.6M | TARGET CHECKED | 0.60 s
+wallace16.aag | CORRECT MULTIPLIER | 0.04 s | 248K | TARGET CHECKED | 0.03 s
+wallace32.aag | CORRECT MULTIPLIER | 0.17 s | 1.2M | TARGET CHECKED | 0.09 s
+wallace32_buggy.aag | INCORRECT MULTIPLIER | 0.09 s | - | no certificate | - s
+wallace64.aag | CORRECT MULTIPLIER | 0.61 s | 5.6M | TARGET CHECKED | 0.38 s
+array128.aag.gz | CORRECT MULTIPLIER | 1.45 s | 28M | TARGET CHECKED | 1.79 s
+booth128.aag.gz | CORRECT MULTIPLIER | 1.87 s | 46M | TARGET CHECKED | 3.14 s
+wallace128.aag.gz | CORRECT MULTIPLIER | 3.43 s | 29M | TARGET CHECKED | 2.06 s
+
+# AMulet2 (github d-kfmnn/amulet2), same files converted with aigtoaig, `amulet -certify ... -p3`, same machine, 1 core
+# (its proof file starts with "[amulet2] gate" debug lines, removed before checking)
+# file | AMulet2 time incl. certificate | certificate size | pacheck2
+array64  | 6.2 s  | 14 MB  | TARGET CHECKED
+wallace64 | 0.53 s | 7.1 MB | TARGET CHECKED
+booth64  | 2.7 s  | 17 MB  | TARGET CHECKED
+array128 | 152 s  | 82 MB  | TARGET CHECKED
+wallace128 | 3.3 s | 43 MB | TARGET CHECKED
+booth128 | 43.7 s | 104 MB | TARGET CHECKED

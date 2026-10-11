@@ -1,3 +1,32 @@
+# Parat v1.1 — multiplier circuits with certificates
+
+**Download:** `bin/parat-linux-x86_64` (static Linux x86-64; on Windows use WSL). Everything in v1.0 still works the
+same way.
+
+## New
+- **Multiplier mode:** `parat circuit.aag 1 [time_limit_s]`. It proves that a gate-level multiplier (ASCII AIGER, the
+  AMulet2 input format) computes a × b, or prints a counterexample input.
+- **PAC certificates:** `--pac prefix` writes a certificate that pacheck2 (JKU Linz) checks against the circuit file.
+  `verify/verify_multiplier.sh` does both steps.
+- Widths up to 128 bits (products up to 256 bits).
+
+## Measured (same machine, one core; raw numbers in results/multiplier_pac.txt)
+
+| circuit | Parat incl. certificate | AMulet2 incl. certificate |
+|---|---|---|
+| array 128-bit | 1.45 s | 152 s |
+| Booth 128-bit | 1.87 s | 43.7 s |
+| Wallace 128-bit | 3.43 s | 3.3 s |
+
+- Every Parat certificate was checked by pacheck2 (TARGET CHECKED).
+- Broken circuits get a counterexample and no certificate.
+- Tampered certificates are rejected.
+
+## Checksum
+See SHA256SUMS.
+
+---
+
 # Parat v1.0 — first public release
 
 **Download:** `bin/parat-linux-x86_64`. It is a static Linux x86-64 binary with no dependencies; on Windows, use it

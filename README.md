@@ -33,6 +33,11 @@ s VERIFIED                                        # 62 s, independent checker
   - Clearly ahead of probSAT: faster on 13 of 16 hard files, p = 0.01.
   - Level with YalSAT, with a small lead that is not statistically proven.
   - Every one of thousands of answers was checked clause by clause.
+- **New in v1.1: multiplier circuits, proved correct with a certificate.**
+  - `parat mult.aag 1 300 --pac cert` proves that a gate-level multiplier really computes a × b, or prints an input
+    where it does not.
+  - The certificate is checked by pacheck2 (JKU), the checker used for AMulet2's certificates.
+  - 128-bit Booth: Parat 1.9 s with certificate, AMulet2 43.7 s. 128-bit array: 1.5 s vs 152 s.
 - **Nothing to trust blindly.** The repo has everything needed to redo each table on your own machine:
   - an answer checker,
   - a seeded file generator,
@@ -54,6 +59,10 @@ python3 verify/check_model.py benchmarks/hard_n1000/h1000_02.cnf out.txt     # -
 # 2. check a "no answer" yourself (needs drat-trim once)
 git clone https://github.com/marijnheule/drat-trim && make -C drat-trim
 bash verify/verify_unsat.sh benchmarks/wall426/w400_2.cnf drat-trim/drat-trim   # -> s VERIFIED
+
+# 3. check a multiplier proof yourself (needs pacheck2 once)
+git clone https://github.com/d-kfmnn/pacheck2 && (cd pacheck2 && ./configure.sh && make)   # needs g++ and libgmp-dev
+bash verify/verify_multiplier.sh benchmarks/multipliers/booth64.aag pacheck2/pacheck   # -> TARGET CHECKED
 ```
 
 **Command line:**
@@ -64,6 +73,14 @@ bash verify/verify_unsat.sh benchmarks/wall426/w400_2.cnf drat-trim/drat-trim   
 - `--proof FILE` writes a DRAT proof when the answer is UNSAT. `--proof-binary` makes the file about 2x smaller.
   - Proof files are large: about 450 MB for n=400 and 2.2 GB for n=500 (binary).
 - Proof mode uses one core and only methods whose steps can be written as DRAT. See [Limits](#limits).
+
+**Multiplier mode (v1.1):** `parat circuit.aag 1 [time_limit_s] [--pac prefix]`
+- Input: an ASCII AIGER file (`.aag`, as used by AMulet2; convert a binary `.aig` with `aigtoaig`). The first half of
+  the inputs is a (least significant bit first), the second half b, the outputs are the product bits.
+- Output: `s CORRECT MULTIPLIER` or `s INCORRECT MULTIPLIER` with a counterexample (a, b, circuit output, a × b).
+  Exit code 0 / 1.
+- `--pac prefix` writes `prefix.polys`, `prefix.proof`, `prefix.spec` (Practical Algebraic Calculus) when the answer is
+  CORRECT. Check with `pacheck prefix.polys prefix.proof prefix.spec`.
 
 ## Results
 
@@ -149,6 +166,38 @@ measured with 10 new seeds.
   - 42 small industrial files: Parat 24.8 s total vs Kissat 94.9 s, fastest on 33.
   - Weak spot: factoring circuits, where Kissat is about 2.5x faster (33-bit: 21.9 s vs 8.9 s).
 
+### 5. Multiplier circuits (new in v1.1)
+
+**The question:** does this gate-level circuit compute a × b for every input? (For 128-bit inputs that is 2^256
+cases, so testing cannot answer it.)
+
+**How the check works:**
+- `prefix.polys` contains only the circuit, one polynomial per AND gate, read from your `.aag` file.
+- `prefix.spec` is the statement "outputs = a × b (mod 2^width)".
+- `prefix.proof` derives the statement from the circuit. pacheck2 (Daniela Kaufmann, JKU Linz) checks every step with
+  exact integers. It shares no code with Parat.
+
+Same files, same machine, one core. Times include writing the certificate.
+
+| circuit | Parat | Parat certificate | AMulet2 | AMulet2 certificate | pacheck2 on both |
+|---|---|---|---|---|---|
+| array 64-bit | **0.27 s** | 5.4 MB | 6.2 s | 14 MB | CHECKED |
+| Booth 64-bit | **0.40 s** | 8.6 MB | 2.7 s | 17 MB | CHECKED |
+| Wallace 64-bit | 0.61 s | 5.6 MB | **0.53 s** | 7.1 MB | CHECKED |
+| array 128-bit | **1.45 s** | 28 MB | 152 s | 82 MB | CHECKED |
+| Booth 128-bit | **1.87 s** | 46 MB | 43.7 s | 104 MB | CHECKED |
+| Wallace 128-bit | 3.43 s | 29 MB | **3.3 s** | 43 MB | CHECKED |
+
+- **Array and Booth:** Parat is 7–100x faster, with certificates 2–3x smaller.
+- **Wallace:** about equal; AMulet2 is slightly faster.
+- **Broken circuits** (one gate changed): Parat answers INCORRECT, prints a counterexample, and writes no certificate.
+  `benchmarks/multipliers/*_buggy.aag` are two such files.
+- **Tamper test:** changing one gate in `prefix.polys`, halving the modulus, or changing the target makes pacheck2
+  reject the certificate.
+- **Lab fuzz:** 200 random multipliers of 2–24 bits. All 164 certificates were CHECKED, and none of the 36 broken
+  designs got a certificate.
+- Raw numbers: `results/multiplier_pac.txt`. Files: `benchmarks/multipliers/` (128-bit ones are gzipped).
+
 ## Reproduce everything
 
 ```bash
@@ -208,6 +257,11 @@ Ask via an issue titled "Commercial license" (see below).
   - It turns off the two methods that have no DRAT form yet: a counting argument for pigeonhole-type formulas and an
     algebraic argument for multiplier circuits. Files that only those methods can solve end as "unknown" in proof
     mode instead of an unchecked UNSAT.
+- **Multiplier mode:**
+  - It handles unsigned multipliers given as AND-inverter graphs (`.aag`), with inputs a then b.
+  - It was tested on array, Wallace and Booth designs up to 128 bits. Other architectures (for example Kogge-Stone
+    final adders) have not been measured yet.
+  - When a circuit is proved CORRECT without the algebraic method (by search), no certificate is written.
 - **Proof files are big** (GBs at n=500). drat-trim needs about 1–2x the solve time to check them.
 - **Platform:** a Linux x86-64 binary only.
 
@@ -217,4 +271,6 @@ Ask via an issue titled "Commercial license" (see below).
 - The comparisons use Kissat and CaDiCaL (Armin Biere and others), march (Marijn Heule), YalSAT (Armin Biere) and
   probSAT (Adrian Balint).
 - The proofs are checked with drat-trim (Marijn Heule, Nathan Wetzler, Warren Hunt).
+- Multiplier certificates use the PAC format and are checked with pacheck2; the comparison uses AMulet2 (Daniela
+  Kaufmann, Armin Biere and others, JKU Linz).
 - Some benchmark files come from SATLIB (Holger Hoos, Thomas Stützle) and the SAT Competition archive.
