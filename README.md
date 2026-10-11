@@ -26,9 +26,11 @@ s VERIFIED                                        # 62 s, independent checker
   - With `--proof`, every UNSAT result comes with a DRAT proof. drat-trim, the checker used by the SAT Competition,
     verifies it without trusting Parat.
   - Verified so far: all 32 small random files, w400_2 (n=400), w500_2 (n=500), and 67 of 67 general files.
-- **Fastest at proving "no answer" on random 3-SAT among the solvers tested:**
-  - w400_2: Parat 26.8 s, march_nh 28.9 s, Kissat > 3000 s.
+- **Proving "no answer" on hard random 3-SAT: level with march_nh (the specialist), far ahead of CDCL:**
+  - w400_2: Parat 26.8–31.8 s, march_nh 27.6–28.9 s (who wins changes from run to run), Kissat > 3000 s.
   - n=500: 142 s vs 169 s for march_nh.
+- **Big random files with an answer (new):** at 100,000 variables Parat solves 6 of 6 runs (82 s on average);
+  YalSAT and probSAT solve none in 120 s.
 - **Files that have an answer:**
   - Clearly ahead of probSAT: faster on 13 of 16 hard files, p = 0.01.
   - Level with YalSAT, with a small lead that is not statistically proven.
@@ -105,6 +107,8 @@ CaDiCaL).
 | w400_2 (n=400) | **26.8 s** | 28.9 s | > 3000 s | |
 | w500_2 (n=500) | **142–148 s** | 169 s | not run | not run |
 
+- In the Oct 11 scorecard (`results/scorecard_oct11.txt`, limit 150 s) march_nh was faster on w400_2 (27.6 s vs
+  31.8 s) and Parat on w400_0 (43.7 s vs 47.4 s): **level with march**, not ahead. Kissat and CaDiCaL solved neither.
 - The Parat and march numbers in this table come from the same earlier day. On the day the proofs were made the
   machine was slower: w400_2 took 33–35 s, for both the current and the previous Parat build. Compare times only
   within one table.
@@ -112,7 +116,7 @@ CaDiCaL).
   - Parat: 2^(n/21.3)
   - march: 2^(n/22.3)
   - CaDiCaL: 2^(n/14.5)
-- Parat is ahead, but the growth is still exponential, as for every known solver.
+- The growth is still exponential, as for every known solver.
 
 ### 2. Random 3-SAT: files that have an answer
 
@@ -136,6 +140,19 @@ measured with 10 new seeds.
   - Hard set: faster on 11 of 16 files (p = 0.1); total time 1.09x (95% CI 0.96–1.63).
   - Fresh sets: lower total time (2.7x, 95% CI 1.03–4.7), but faster on only 17 of 29 files (p = 0.23).
   - Parat makes about 33% more search steps per second.
+
+**Big files (Oct 11 evening update).** Fresh files, ratio 4.2, 3 files per size × 2 seeds, limit 120 s; runs solved
+and average time (a failed run counts 240 s):
+
+| variables | Parat | YalSAT | probSAT |
+|---|---|---|---|
+| 10,000 | **6/6, 2.7 s** | 6/6, 12.0 s | 6/6, 4.2 s |
+| 20,000 | **6/6, 18.7 s** | 4/6, 98.4 s | 6/6, 34.3 s |
+| 50,000 | **6/6, 34.7 s** | 0/6 | 6/6, 54.9 s |
+| 100,000 | **6/6, 81.6 s** | 0/6 | 0/6 |
+
+Before this update Parat used its n=1000 settings for every size and lost to probSAT from about 5,000 variables on
+(same scorecard file, "BEFORE"). It now switches to its own start-value signal from 4,000 variables on.
 
 ### 3. Certified "no answer" (DRAT proofs)
 
@@ -229,6 +246,24 @@ in `benchmarks/genmul64/` (gzipped AIGER, made with `verify/gen_genmul.py` and y
   referee = simulation on **all** 2^(2·width) inputs: 0 wrong answers, every counterexample re-simulated, every
   certificate CHECKED.
 - Full table: `results/genmul64_race.txt`.
+
+### 7. Scorecard: every category, one table (Oct 11)
+
+One core per run, same machine, every SAT answer checked clause by clause; full numbers in
+`results/scorecard_oct11.txt`. **Wrong answers in all categories: 0.**
+
+| category | files | Parat solved | best other | Parat faster / slower than it (files) |
+|---|---|---|---|---|
+| random 3-SAT with answer, n=1000 hard | 16 × 3 seeds | **47/48** | YalSAT 46/48 | 10 / 6 |
+| random 3-SAT, 10k–100k variables | 12 × 2 seeds | **24/24** | probSAT 18/24 | 12 / 0 |
+| random 3-SAT "no answer" (n=300–400) | 6 | **6/6** | march_nh 6/6 | 4 / 2 |
+| SATLIB classics (uf, aim, dubois, flat) | 102 | **102/102** | Kissat 101/102 | 89 / 7 |
+| structured and industrial | 143 | **137/143** | Kissat 134/142 | 96 / 40 |
+| circuits (multiplier/adder miters, factoring, sudoku) | 60 | **60/60** | Kissat 37/60 | 39 / 20 |
+| multiplier verification (GenMul, 64-bit) | 28 | **27/28** | AMulet2 8/28 | section 6 |
+
+Where Parat is slower: prime factoring and sudoku (Kissat, CaDiCaL), colouring files (about even), and on 40 of the
+143 structured files Kissat is faster.
 
 ## Reproduce everything
 

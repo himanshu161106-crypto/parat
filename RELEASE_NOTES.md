@@ -1,3 +1,13 @@
+# Update 3, Oct 11 2026 (night): big random files + full scorecard
+
+- Random 3-SAT with an answer, 10,000–100,000 variables: Parat now solves all 24 fresh runs; at 100,000 variables
+  YalSAT and probSAT solve none in 120 s (Parat 82 s on average).
+- Full scorecard in 7 categories against the best solver of each (`results/scorecard_oct11.txt`), 0 wrong answers.
+- Correction: on hard random "no answer" files Parat is level with march_nh (who wins changes from run to run), not
+  ahead as an earlier README line said.
+
+---
+
 # Update 2, Oct 11 2026 (evening): the GenMul multiplier family
 
 **Download:** `bin/parat-linux-x86_64` (also attached to the v1.0 release page). Nothing else changes in how it is used.

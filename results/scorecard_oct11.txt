@@ -1,0 +1,50 @@
+# Parat scorecard, Oct 11 2026. One core per run, same machine; every SAT answer checked against every clause.
+# Walkers (Parat, YalSAT, probSAT): several seeds; complete solvers: one run per file. PAR-2: a failed run counts 2x the limit.
+# Categories A, C-F: release build of the Oct 11 evening update. B2: final build with the large-file rule (n >= 4000).
+
+== A_random_sat_n1000  (16 files, limit 60 s)
+   wrong answers: 0   SAT/UNSAT clashes: 0
+   parat    solved   47/48   PAR-2     4.71  median    0.64
+   yalsat   solved   46/48   PAR-2     8.20  median    0.93   | Parat faster on 10, slower on 6 files
+   probsat  solved   42/48   PAR-2    18.14  median    1.26   | Parat faster on 15, slower on 1 files
+   kissat   solved    6/16   PAR-2    86.81  median  120.00   | Parat faster on 16, slower on 0 files
+
+== B_random_big, BEFORE the large-file rule (9 files: n = 10k / 50k / 200k, limit 120 s)
+   wrong answers: 0   SAT/UNSAT clashes: 0
+   yalsat   solved    4/9    PAR-2   149.87  median  240.00   | Parat faster on 2, slower on 2 files
+   probsat  solved    6/9    PAR-2    95.48  median   38.55   | Parat faster on 1, slower on 5 files
+   parat    solved    3/9    PAR-2   163.31  median  240.00
+   kissat   solved    0/9    PAR-2   240.00  median  240.00   | Parat faster on 3, slower on 0 files
+
+== C_random_unsat  (6 files, limit 150 s)
+   wrong answers: 0   SAT/UNSAT clashes: 0
+   parat    solved    6/6    PAR-2    12.64  median    0.15
+   kissat   solved    4/6    PAR-2   100.87  median    2.06   | Parat faster on 6, slower on 0 files
+   march    solved    6/6    PAR-2    12.88  median    1.01   | Parat faster on 4, slower on 2 files
+   cadical  solved    4/6    PAR-2   100.42  median    0.95   | Parat faster on 6, slower on 0 files
+
+== D_satlib  (102 files, limit 20 s)
+   wrong answers: 0   SAT/UNSAT clashes: 0
+   parat    solved  102/102  PAR-2     0.01  median    0.01
+   kissat   solved  101/102  PAR-2     0.46  median    0.02   | Parat faster on 89, slower on 7 files
+   yalsat   solved   73/102  PAR-2    11.38  median    0.01   | Parat faster on 62, slower on 27 files
+   cadical  solved  101/102  PAR-2     0.47  median    0.01   | Parat faster on 68, slower on 11 files
+
+== E_structured  (143 files, limit 30 s)
+   wrong answers: 0   SAT/UNSAT clashes: 0
+   parat    solved  137/143  PAR-2     3.80  median    0.14
+   kissat   solved  134/142  PAR-2     5.75  median    0.20   | Parat faster on 96, slower on 40 files
+   cadical  solved  134/142  PAR-2     5.78  median    0.25   | Parat faster on 87, slower on 48 files
+
+== F_circuits  (60 files, limit 60 s)
+   wrong answers: 0   SAT/UNSAT clashes: 0
+   parat    solved   60/60   PAR-2     0.46  median    0.04
+   kissat   solved   37/60   PAR-2    46.51  median    1.41   | Parat faster on 39, slower on 20 files
+   cadical  solved   37/60   PAR-2    46.61  median    0.78   | Parat faster on 38, slower on 20 files
+
+== B2_random_big_fresh AFTER the large-file rule (fresh files, ratio 4.2, 3 files per size x 2 seeds, limit 120 s): solved / runs, PAR-2
+  n = 10000 parat: 6/6 2.7  yalsat: 6/6 12.0  probsat: 6/6 4.2
+  n = 20000 parat: 6/6 18.7  yalsat: 4/6 98.4  probsat: 6/6 34.3
+  n = 50000 parat: 6/6 34.7  yalsat: 0/6 240.0  probsat: 6/6 54.9
+  n = 100000 parat: 6/6 81.6  yalsat: 0/6 240.0  probsat: 0/6 240.0
+   wrong answers: 0
