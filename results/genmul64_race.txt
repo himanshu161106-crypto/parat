@@ -1,0 +1,32 @@
+# GenMul designs, 64-bit unsigned (28 = 4 trees x 7 final adders), one core each, limit 300 s.
+# Parat: final v1.2 release build (Oct 11). AMulet2: github d-kfmnn/amulet2, '-certify -p3', same machine, same files.
+# Certificates of both checked with pacheck2. Parat time without --pac.
+# design         | Parat                | time      | Parat certificate              | AMulet2              | AMulet time | AMulet cert
+u-sp-ar-bk-64    | CORRECT MULTIPLIER   |    0.17 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ar-cl-64    | CORRECT MULTIPLIER   |    0.52 s | none (SAT step)                | stopped, no answer   |  254.70 s | -
+u-sp-ar-cs-64    | CORRECT MULTIPLIER   |    0.18 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ar-ks-64    | CORRECT MULTIPLIER   |    0.26 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ar-lf-64    | CORRECT MULTIPLIER   |    0.20 s | CHECKED 11M                    | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ar-rc-64    | CORRECT MULTIPLIER   |    0.19 s | CHECKED 3.9M                   | CORRECT              |    0.41 s | CHECKED
+u-sp-ar-sp-64    | CORRECT MULTIPLIER   |    0.18 s | CHECKED 3.9M                   | CORRECT              |    0.45 s | CHECKED
+u-sp-ct-bk-64    | CORRECT MULTIPLIER   |    3.51 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ct-cl-64    | CORRECT MULTIPLIER   |   10.06 s | none (SAT step)                | stopped, no answer   |  104.55 s | -
+u-sp-ct-cs-64    | CORRECT MULTIPLIER   |    3.48 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ct-ks-64    | CORRECT MULTIPLIER   |    4.62 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ct-lf-64    | CORRECT MULTIPLIER   |    3.55 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-ct-rc-64    | CORRECT MULTIPLIER   |    3.27 s | none (too large for pacheck2)  | CORRECT              |  135.14 s | CHECKED
+u-sp-ct-sp-64    | CORRECT MULTIPLIER   |    3.30 s | none (too large for pacheck2)  | CORRECT              |  110.06 s | CHECKED
+u-sp-dt-bk-64    | CORRECT MULTIPLIER   |    0.29 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-dt-cl-64    | CORRECT MULTIPLIER   |    2.77 s | none (SAT step)                | stopped, no answer   |   71.79 s | -
+u-sp-dt-cs-64    | CORRECT MULTIPLIER   |    0.24 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-dt-ks-64    | CORRECT MULTIPLIER   |    0.47 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-dt-lf-64    | CORRECT MULTIPLIER   |    0.33 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-dt-rc-64    | CORRECT MULTIPLIER   |    0.18 s | CHECKED 3.9M                   | CORRECT              |    1.11 s | CHECKED
+u-sp-dt-sp-64    | CORRECT MULTIPLIER   |    0.33 s | CHECKED 3.9M                   | CORRECT              |    1.20 s | CHECKED
+u-sp-wt-bk-64    | CORRECT MULTIPLIER   |    0.69 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-wt-cl-64    | UNKNOWN (time)       |  284.16 s | -                              | stopped, no answer   |   73.64 s | -
+u-sp-wt-cs-64    | CORRECT MULTIPLIER   |    0.45 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-wt-ks-64    | CORRECT MULTIPLIER   |    0.96 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-wt-lf-64    | CORRECT MULTIPLIER   |    0.82 s | none (SAT step)                | TIMEOUT (300 s)      |  300.00 s | -
+u-sp-wt-rc-64    | CORRECT MULTIPLIER   |    0.44 s | CHECKED 4.1M                   | CORRECT              |    1.43 s | CHECKED
+u-sp-wt-sp-64    | CORRECT MULTIPLIER   |    0.39 s | CHECKED 4.1M                   | CORRECT              |    1.48 s | CHECKED

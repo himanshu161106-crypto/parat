@@ -1,3 +1,25 @@
+# Update 2, Oct 11 2026 (evening): the GenMul multiplier family
+
+**Download:** `bin/parat-linux-x86_64` (also attached to the v1.0 release page). Nothing else changes in how it is used.
+
+## New
+- Parat proves **27 of the 28 GenMul multiplier designs** at 64 bits: array / Wallace / Dadda / counter trees with
+  ripple, carry-lookahead, Ladner-Fischer, Kogge-Stone, Brent-Kung, carry-skip and serial-prefix adders.
+  AMulet2 proves 8 of them in the same 300 s per design. Table: `results/genmul64_race.txt`.
+- Wallace multipliers are 1.6–2.5x faster than AMulet2 (128-bit: 1.31 s vs 3.2 s, with certificate). Certificates
+  are smaller.
+- Broken multipliers: faster counterexamples.
+- General SAT files: 258-file check, 0 wrong answers, 2 more files solved than before, total time 281 s -> 264 s.
+
+## Honest limits
+- Designs with fast final adders are proved, but without a certificate (one kind of step has no certificate form
+  yet). Parat says so.
+- One GenMul design (Wallace + carry-lookahead) is not proved, by either tool.
+- Random 3-SAT with an answer: still level with YalSAT (ahead on 12 of 16 hard files, not statistically proven).
+- Prime factoring circuits: Kissat is still about 1.6x faster.
+
+---
+
 # Update, Oct 11 2026 — multiplier circuits with certificates (part of v1.0, binary in bin/)
 
 **Download:** `bin/parat-linux-x86_64` from the repo (static Linux x86-64; on Windows use WSL). Everything else

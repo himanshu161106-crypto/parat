@@ -24,3 +24,11 @@ booth64  | 2.7 s  | 17 MB  | TARGET CHECKED
 array128 | 152 s  | 82 MB  | TARGET CHECKED
 wallace128 | 3.3 s | 43 MB | TARGET CHECKED
 booth128 | 43.7 s | 104 MB | TARGET CHECKED
+
+# v1.2 (Oct 11 evening), release build, best of 3, 1 core, with --pac; certificates checked by pacheck2
+array64    | 0.30 s | 4.0 MB | TARGET CHECKED
+wallace64  | 0.34 s | 4.2 MB | TARGET CHECKED
+booth64    | 0.35 s | 7.2 MB | TARGET CHECKED
+array128   | 1.31 s | 19 MB  | TARGET CHECKED
+wallace128 | 1.31 s | 20 MB  | TARGET CHECKED
+booth128   | 2.03 s | 37 MB  | TARGET CHECKED
