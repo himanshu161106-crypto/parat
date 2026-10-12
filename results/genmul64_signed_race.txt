@@ -1,0 +1,62 @@
+# GenMul, 64-bit SIGNED (two's complement), 27 designs (GenMul makes no signed ar-cs), Oct 12 update. One core, 300 s.
+# Parat --pac (signed specification detected by simulation) vs AMulet2 -certify -p3 -signed; every certificate checked by pacheck2.
+# Summary: Parat proved 26, 26 certificates CHECKED. AMulet2 proved 11, 11 CHECKED; on 3 designs (ct-cl, dt-cl, wt-cl)
+# it gave no CORRECT/INCORRECT line ('?') and pacheck2 rejected the certificate it wrote - this may be a problem in how
+# AMulet2 was run here; please tell us if so. Note: during this race another process shared the machine part of the
+# time, so times below may be inflated (for both tools). Clean Parat proof times without --pac are at the end.
+s-sp-ar-bk-64    parat CORRECT MULTIPLIER      0.41 s CHECKED   | amulet CORRECT      0.67 s CHECKED
+s-sp-ar-cl-64    parat CORRECT MULTIPLIER      0.39 s CHECKED   | amulet CORRECT      0.64 s CHECKED
+s-sp-ar-ks-64    parat CORRECT MULTIPLIER      0.51 s CHECKED   | amulet CORRECT      0.77 s CHECKED
+s-sp-ar-lf-64    parat CORRECT MULTIPLIER      0.50 s CHECKED   | amulet CORRECT      0.78 s CHECKED
+s-sp-ar-rc-64    parat CORRECT MULTIPLIER      0.53 s CHECKED   | amulet CORRECT      0.79 s CHECKED
+s-sp-ar-sp-64    parat CORRECT MULTIPLIER      0.41 s CHECKED   | amulet CORRECT      0.82 s CHECKED
+s-sp-ct-bk-64    parat CORRECT MULTIPLIER     13.85 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-ct-cl-64    parat CORRECT MULTIPLIER     49.32 s CHECKED   | amulet ?          157.05 s REJECTED
+s-sp-ct-cs-64    parat CORRECT MULTIPLIER     31.38 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-ct-ks-64    parat CORRECT MULTIPLIER     21.95 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-ct-lf-64    parat CORRECT MULTIPLIER     23.14 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-ct-rc-64    parat CORRECT MULTIPLIER     15.89 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-ct-sp-64    parat CORRECT MULTIPLIER     14.70 s CHECKED   | amulet CORRECT    287.87 s CHECKED
+s-sp-dt-bk-64    parat CORRECT MULTIPLIER      5.89 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-dt-cl-64    parat CORRECT MULTIPLIER     50.47 s CHECKED   | amulet ?           95.75 s REJECTED
+s-sp-dt-cs-64    parat CORRECT MULTIPLIER     11.45 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-dt-ks-64    parat CORRECT MULTIPLIER     24.73 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-dt-lf-64    parat CORRECT MULTIPLIER     20.62 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-dt-rc-64    parat CORRECT MULTIPLIER      0.51 s CHECKED   | amulet CORRECT      2.08 s CHECKED
+s-sp-dt-sp-64    parat CORRECT MULTIPLIER      0.58 s CHECKED   | amulet CORRECT      2.07 s CHECKED
+s-sp-wt-bk-64    parat CORRECT MULTIPLIER      2.93 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-wt-cl-64    parat TIMEOUT                        300.00 s no cert   | amulet ?          100.12 s REJECTED
+s-sp-wt-cs-64    parat CORRECT MULTIPLIER     14.60 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-wt-ks-64    parat CORRECT MULTIPLIER      6.62 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-wt-lf-64    parat CORRECT MULTIPLIER      4.95 s CHECKED   | amulet TIMEOUT    300.00 s -
+s-sp-wt-rc-64    parat CORRECT MULTIPLIER      0.62 s CHECKED   | amulet CORRECT      2.55 s CHECKED
+s-sp-wt-sp-64    parat CORRECT MULTIPLIER      0.62 s CHECKED   | amulet CORRECT      2.26 s CHECKED
+
+# clean Parat proof times (release binary, no --pac):
+s-sp-ar-bk-64    CORRECT MULTIPLIER        0.46 s
+s-sp-ar-cl-64    CORRECT MULTIPLIER        0.35 s
+s-sp-ar-ks-64    CORRECT MULTIPLIER        0.21 s
+s-sp-ar-lf-64    CORRECT MULTIPLIER        0.18 s
+s-sp-ar-rc-64    CORRECT MULTIPLIER        0.23 s
+s-sp-ar-sp-64    CORRECT MULTIPLIER        0.20 s
+s-sp-ct-bk-64    CORRECT MULTIPLIER        3.49 s
+s-sp-ct-cl-64    CORRECT MULTIPLIER       14.35 s
+s-sp-ct-cs-64    CORRECT MULTIPLIER        3.44 s
+s-sp-ct-ks-64    CORRECT MULTIPLIER        4.97 s
+s-sp-ct-lf-64    CORRECT MULTIPLIER        3.89 s
+s-sp-ct-rc-64    CORRECT MULTIPLIER        3.68 s
+s-sp-ct-sp-64    CORRECT MULTIPLIER        3.70 s
+s-sp-dt-bk-64    CORRECT MULTIPLIER        0.38 s
+s-sp-dt-cl-64    CORRECT MULTIPLIER        3.35 s
+s-sp-dt-cs-64    CORRECT MULTIPLIER        0.24 s
+s-sp-dt-ks-64    CORRECT MULTIPLIER        0.52 s
+s-sp-dt-lf-64    CORRECT MULTIPLIER        0.39 s
+s-sp-dt-rc-64    CORRECT MULTIPLIER        0.20 s
+s-sp-dt-sp-64    CORRECT MULTIPLIER        0.22 s
+s-sp-wt-bk-64    CORRECT MULTIPLIER        0.88 s
+s-sp-wt-cl-64                            300.04 s
+s-sp-wt-cs-64    CORRECT MULTIPLIER        0.60 s
+s-sp-wt-ks-64    CORRECT MULTIPLIER        1.40 s
+s-sp-wt-lf-64    CORRECT MULTIPLIER        0.94 s
+s-sp-wt-rc-64    CORRECT MULTIPLIER        0.43 s
+s-sp-wt-sp-64    CORRECT MULTIPLIER        0.39 s

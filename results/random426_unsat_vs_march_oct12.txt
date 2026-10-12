@@ -1,0 +1,14 @@
+# Random 3-SAT, ratio 4.26, n=380, files without an answer (benchmarks/random426_n380, v380_9 ... v380_15). One core, clean machine.
+# old = Oct 11 settings (long walk before the lookahead), new = Oct 12 release, march = march_nh. Seconds.
+# file          old      new    march
+v380_9.cnf      16.51    12.1    13.44
+v380_10.cnf     13.31    10.6    12.86
+v380_11.cnf     26.00    21.2    23.76
+v380_12.cnf     23.45    18.6    20.19
+v380_13.cnf     17.80    14.8    14.54
+v380_14.cnf     18.84    16.0    16.06
+v380_15.cnf     15.92    13.1    12.10
+# total         131.8   106.4    112.9
+# Release binary (second run, while a proof check ran on the other core): 12.8 11.1 22.3 20.1 16.3 15.8 13.3 = 111.7 s.
+# The 9 files of this set that have an answer: all < 0.1 s, old and new.
+# w400_2 (benchmarks/wall426), same day, both runs at once on the two cores: Parat 30.8 s, march_nh 29.6 s.

@@ -1,0 +1,16 @@
+# Rare bugs (Oct 12 update): 64-bit GenMul designs with a planted bug: one gate input is XORed with the AND of k random
+# input literals, so the output is wrong only when those k input bits all match (about 1 input in 2^k).
+# Random simulation practically never sees such a bug. Before this update Parat answered UNKNOWN on all of them.
+# One core, limit 60 s. Every counterexample printed is re-simulated on the circuit before it is printed.
+# design          k    result                time    counterexample
+u-sp-ar-rc-64     18   INCORRECT MULTIPLIER   7.5 s   found by targeted simulation   (benchmarks/rare_bugs, *_rare18)
+u-sp-wt-ks-64     20   INCORRECT MULTIPLIER  16.3 s   found by targeted simulation
+u-sp-dt-lf-64     22   INCORRECT MULTIPLIER   7.2 s   found directly                 (benchmarks/rare_bugs, *_rare22)
+u-sp-ct-rc-64     24   UNKNOWN               60 s     -
+u-sp-wt-bk-64     26   INCORRECT MULTIPLIER   5.0 s   found directly
+u-sp-ar-cl-64     28   UNKNOWN               60 s     -   (the changed gate does not seem to affect the outputs: even with k = 1..3 no
+                                                         input shows a difference, so this design may still be correct)
+u-sp-dt-cs-64     30   INCORRECT MULTIPLIER   2.7 s   found directly
+u-sp-ct-ks-64     32   INCORRECT MULTIPLIER  14.9 s   found by targeted simulation
+u-sp-dt-rc-64     24   INCORRECT MULTIPLIER   2.1 s   found directly                 (benchmarks/rare_bugs, *_rare24)
+# Note: these times were measured while another process shared the machine part of the time.

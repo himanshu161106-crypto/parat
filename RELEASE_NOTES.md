@@ -1,3 +1,35 @@
+# Update 4, Oct 12 2026: certificates for every proved GenMul design, signed multipliers, Windows
+
+**Download:** `bin/parat-linux-x86_64` and, new, `bin/parat-windows-x86_64.exe` (also attached to the v1.0 release page).
+
+## New
+- **Certificates:** all 27 GenMul designs that Parat proves at 64 bits now come with a PAC certificate that pacheck2
+  checks (before: 8). This includes the fast final adders (Kogge-Stone, Brent-Kung, Ladner-Fischer,
+  carry-lookahead, carry-skip) and the counter-tree designs (`results/genmul64_pac_oct12.txt`).
+- **Signed multipliers** (two's complement), detected automatically (`--signed` / `--unsigned` to force): 26 of the
+  27 signed GenMul designs at 64 bits proved and certified; AMulet2 `-signed`: 11 (`results/genmul64_signed_race.txt`).
+- **Rare bugs:** bugs that change the output on about 1 input in 2^20 are now found on 6 of 8 test designs in
+  2–16 s; before, the answer was "unknown" (`results/rare_bugs_oct12.txt`, files in `benchmarks/rare_bugs/`).
+- **Random 3-SAT, ratio 4.26:** "no answer" files at n=380: 132 s -> 106–112 s for 7 files (march_nh 113 s).
+  Files with an answer at n=1000: 60/60 solved, mean 2.73 s (probSAT 2.84 s, YalSAT 3.66 s).
+- **Structured files:** 140 of 143 solved (was 137), PAR-2 3.80 -> 2.66 s (`results/scorecard_oct12.txt`).
+- **Big files** are read about 20% faster (5 industrial files: 5.97 -> 4.70 s; Kissat 5.06 s).
+- **Windows:** a native `.exe` (one core). Run it from a terminal, for example Git Bash.
+
+## Checks on the final build
+- 67 of 67 DRAT proofs on `benchmarks/general_unsat/` verified by drat-trim.
+- 170 general files: same answers as the Oct 11 release, every SAT answer checked.
+- Fuzz: 210 signed and 65 unsigned random multipliers (most broken): 0 wrong answers, every certificate CHECKED.
+
+## Honest limits
+- Prime factoring: Kissat is still about 1.8x faster.
+- Wallace + carry-lookahead (signed or unsigned) is not proved. AMulet2 does not prove it either.
+- Some certificates are big (up to 1.3 GB at 64 bits).
+- Colouring files without an answer became about 1.8x slower (the price of solving more colouring files that have one).
+- The Windows build uses one core and has been tested on one PC so far.
+
+---
+
 # Update 3, Oct 11 2026 (night): big random files + full scorecard
 
 - Random 3-SAT with an answer, 10,000–100,000 variables: Parat now solves all 24 fresh runs; at 100,000 variables

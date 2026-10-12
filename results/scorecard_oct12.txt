@@ -1,0 +1,29 @@
+# Scorecard, Oct 12 update: Parat (new build) re-run on categories C-F of results/scorecard_oct11.txt.
+# The other solvers' numbers are the Oct 11 runs from that file (same machine, same files, same limits).
+# Build: Oct 12 lab build just before the last change (walk hand-over for uniform random 3-SAT, n < 4000), which these categories barely use.
+# Raw runs: scorecard_oct12_parat.jsonl. Wrong answers: 0.
+
+== C_random_unsat (limit 150 s)
+   parat Oct 11  solved 6/6  PAR-2 12.64
+   parat Oct 12  solved 6/6  PAR-2 12.21
+   kissat   solved 4/6  PAR-2 100.87  | Parat Oct 12 faster on 6, slower on 0
+   cadical  solved 4/6  PAR-2 100.42  | Parat Oct 12 faster on 6, slower on 0
+   march    solved 6/6  PAR-2 12.88  | Parat Oct 12 faster on 5, slower on 1
+== D_satlib (limit 20 s)
+   parat Oct 11  solved 102/102  PAR-2 0.01
+   parat Oct 12  solved 102/102  PAR-2 0.01
+   kissat   solved 101/102  PAR-2 0.46  | Parat Oct 12 faster on 82, slower on 12
+   cadical  solved 101/102  PAR-2 0.47  | Parat Oct 12 faster on 45, slower on 42
+== E_structured (limit 30 s)
+   parat Oct 11  solved 137/143  PAR-2 3.80
+   parat Oct 12  solved 140/143  PAR-2 2.66
+   kissat   solved 134/142  PAR-2 5.75  | Parat Oct 12 faster on 107, slower on 29
+   cadical  solved 134/142  PAR-2 5.78  | Parat Oct 12 faster on 99, slower on 37
+== F_circuits (limit 60 s)
+   parat Oct 11  solved 60/60  PAR-2 0.46
+   parat Oct 12  solved 60/60  PAR-2 0.38
+   kissat   solved 37/60  PAR-2 46.51  | Parat Oct 12 faster on 42, slower on 18
+   cadical  solved 37/60  PAR-2 46.61  | Parat Oct 12 faster on 42, slower on 17
+
+# Known cost: on colouring files WITHOUT an answer (c500_103, c500_108) the new CSP setting is about 1.8x slower
+# (c500_103: 15 -> 28 s), because the walk keeps its share of the time; on colouring files WITH an answer it solves more.

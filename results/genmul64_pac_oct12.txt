@@ -1,0 +1,33 @@
+# GenMul, 64-bit unsigned, 28 designs (Oct 12 update). One core.
+# proof time: release binary without --pac, clean machine, limit 300 s.
+# certificate: run with --pac, checked by pacheck2 (pacheck2 says TARGET CHECKED); size = proof file.
+# design          | result               | proof time | certificate
+u-sp-ar-bk-64     | CORRECT MULTIPLIER   |     0.45 s | CHECKED 4.6M
+u-sp-ar-cl-64     | CORRECT MULTIPLIER   |     0.75 s | CHECKED 39M
+u-sp-ar-cs-64     | CORRECT MULTIPLIER   |     0.25 s | CHECKED 45M
+u-sp-ar-ks-64     | CORRECT MULTIPLIER   |     0.26 s | CHECKED 12M
+u-sp-ar-lf-64     | CORRECT MULTIPLIER   |     0.29 s | CHECKED 9.2M
+u-sp-ar-rc-64     | CORRECT MULTIPLIER   |     0.43 s | CHECKED 2.3M
+u-sp-ar-sp-64     | CORRECT MULTIPLIER   |     0.18 s | CHECKED 2.2M
+u-sp-ct-bk-64     | CORRECT MULTIPLIER   |     3.81 s | CHECKED 325M
+u-sp-ct-cl-64     | CORRECT MULTIPLIER   |    11.52 s | CHECKED 769M
+u-sp-ct-cs-64     | CORRECT MULTIPLIER   |     3.59 s | CHECKED 713M
+u-sp-ct-ks-64     | CORRECT MULTIPLIER   |     5.06 s | CHECKED 411M
+u-sp-ct-lf-64     | CORRECT MULTIPLIER   |     4.26 s | CHECKED 380M
+u-sp-ct-rc-64     | CORRECT MULTIPLIER   |     3.61 s | CHECKED 307M
+u-sp-ct-sp-64     | CORRECT MULTIPLIER   |     3.61 s | CHECKED 307M
+u-sp-dt-bk-64     | CORRECT MULTIPLIER   |     0.26 s | CHECKED 53M
+u-sp-dt-cl-64     | CORRECT MULTIPLIER   |     3.34 s | CHECKED 1.3G
+u-sp-dt-cs-64     | CORRECT MULTIPLIER   |     0.35 s | CHECKED 229M
+u-sp-dt-ks-64     | CORRECT MULTIPLIER   |     0.69 s | CHECKED 428M
+u-sp-dt-lf-64     | CORRECT MULTIPLIER   |     0.32 s | CHECKED 310M
+u-sp-dt-rc-64     | CORRECT MULTIPLIER   |     0.19 s | CHECKED 2.2M
+u-sp-dt-sp-64     | CORRECT MULTIPLIER   |     0.19 s | CHECKED 2.2M
+u-sp-wt-bk-64     | CORRECT MULTIPLIER   |     0.68 s | CHECKED 19M
+u-sp-wt-cl-64     | UNKNOWN (time)       |   300.05 s | - (not proved)
+u-sp-wt-cs-64     | CORRECT MULTIPLIER   |     0.47 s | CHECKED 389M
+u-sp-wt-ks-64     | CORRECT MULTIPLIER   |     1.14 s | CHECKED 94M
+u-sp-wt-lf-64     | CORRECT MULTIPLIER   |     0.95 s | CHECKED 64M
+u-sp-wt-rc-64     | CORRECT MULTIPLIER   |     0.44 s | CHECKED 2.3M
+u-sp-wt-sp-64     | CORRECT MULTIPLIER   |     0.52 s | CHECKED 2.3M
+# 27 of 28 proved, 27 of 28 with a CHECKED certificate (before this update: 8). u-sp-wt-cl-64: not proved in 300 s.

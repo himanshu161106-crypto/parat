@@ -27,13 +27,17 @@ s VERIFIED                                        # 62 s, independent checker
     verifies it without trusting Parat.
   - Verified so far: all 32 small random files, w400_2 (n=400), w500_2 (n=500), and 67 of 67 general files.
 - **Proving "no answer" on hard random 3-SAT: level with march_nh (the specialist), far ahead of CDCL:**
-  - w400_2: Parat 26.8–31.8 s, march_nh 27.6–28.9 s (who wins changes from run to run), Kissat > 3000 s.
+  - w400_2: Parat 26.8–31.8 s, march_nh 27.6–29.6 s (who wins changes from run to run), Kissat > 3000 s.
   - n=500: 142 s vs 169 s for march_nh.
+  - New (Oct 12): 7 fresh files at n=380: Parat 106–112 s in total (two runs), march_nh 113 s; Parat needed 132 s
+    before this update. Level with march, slightly ahead.
 - **Big random files with an answer (new):** at 100,000 variables Parat solves 6 of 6 runs (82 s on average);
   YalSAT and probSAT solve none in 120 s.
 - **Files that have an answer:**
   - Clearly ahead of probSAT: faster on 13 of 16 hard files, p = 0.01.
   - Level with YalSAT, with a small lead that is not statistically proven.
+  - New (Oct 12), 20 fresh files at n=1000, ratio 4.26, 3 seeds: Parat 60/60, mean 2.73 s, median 0.31 s;
+    probSAT 60/60, 2.84 s, 0.98 s; YalSAT 59/60, 3.66 s, 0.37 s. A lead on all three measures, but a small one.
   - Every one of thousands of answers was checked clause by clause.
 - **New (Oct 11 update): multiplier circuits, proved correct with a certificate.**
   - `parat mult.aag 1 300 --pac cert` proves that a gate-level multiplier really computes a × b, or prints an input
@@ -41,7 +45,9 @@ s VERIFIED                                        # 62 s, independent checker
   - The certificate is checked by pacheck2 (JKU), the checker used for AMulet2's certificates.
   - 128-bit Booth: Parat 2.0 s with certificate, AMulet2 43.7 s. 128-bit array: 1.3 s vs 152 s.
   - On the 28 GenMul designs (the family AMulet2's own papers use), 64-bit: Parat proves 27, AMulet2 8, both
-    with 300 s per design.
+    with 300 s per design. **New (Oct 12): all 27 now come with a certificate that pacheck2 checks** (before: 8).
+  - **New (Oct 12): signed multipliers** (two's complement, detected automatically): 26 of the 27 signed GenMul
+    designs proved and certified; AMulet2 with `-signed`: 11.
 - **Nothing to trust blindly.** The repo has everything needed to redo each table on your own machine:
   - an answer checker,
   - a seeded file generator,
@@ -50,7 +56,9 @@ s VERIFIED                                        # 62 s, independent checker
 
 ## Quick start
 
-Linux x86-64; the binary is static and needs nothing else. On Windows use WSL; there is no macOS build yet.
+Linux x86-64: `bin/parat-linux-x86_64` is static and needs nothing else. **Windows (new, Oct 12):**
+`bin/parat-windows-x86_64.exe`, run it from a terminal (for example Git Bash): `./parat-windows-x86_64.exe file.cnf`.
+The Windows build uses one core. There is no macOS build yet.
 
 ```bash
 git clone https://github.com/himanshu161106-crypto/parat && cd parat
@@ -78,13 +86,15 @@ bash verify/verify_multiplier.sh benchmarks/multipliers/booth64.aag pacheck2/pac
   - Proof files are large: about 450 MB for n=400 and 2.2 GB for n=500 (binary).
 - Proof mode uses one core and only methods whose steps can be written as DRAT. See [Limits](#limits).
 
-**Multiplier mode (Oct 11 update):** `parat circuit.aag 1 [time_limit_s] [--pac prefix]`
+**Multiplier mode (Oct 11 update):** `parat circuit.aag 1 [time_limit_s] [--pac prefix] [--signed | --unsigned]`
 - Input: an ASCII AIGER file (`.aag`, as used by AMulet2; convert a binary `.aig` with `aigtoaig`). The first half of
   the inputs is a (least significant bit first), the second half b, the outputs are the product bits.
 - Output: `s CORRECT MULTIPLIER` or `s INCORRECT MULTIPLIER` with a counterexample (a, b, circuit output, a × b).
   Exit code 0 / 1.
 - `--pac prefix` writes `prefix.polys`, `prefix.proof`, `prefix.spec` (Practical Algebraic Calculus) when the answer is
   CORRECT. Check with `pacheck prefix.polys prefix.proof prefix.spec`.
+- Signed or unsigned: Parat decides by simulating the circuit (and prints `c specification: signed ...` for signed);
+  `--signed` / `--unsigned` force it. The certificate's target then uses the matching specification.
 
 ## Results
 
@@ -184,7 +194,8 @@ Before this update Parat used its n=1000 settings for every size and lost to pro
 - **Earlier lab measurements** (files not in this repo):
   - 42 small industrial files: Parat 24.8 s total vs Kissat 94.9 s, fastest on 33.
   - Weak spot: factoring circuits. On 8 fresh prime-factoring files (28–31 bit) Kissat is about 1.6x faster
-    (23.9 s vs 39.2 s in total; it was about 2.5x before the Oct 11 update).
+    (23.9 s vs 39.2 s in total; it was about 2.5x before the Oct 11 update). On the 5 prime files of the scorecard
+    (fprime29–33) Kissat is about 1.8x faster (25.6 s vs 45.4 s, Oct 12 build).
 
 ### 5. Multiplier circuits (new, Oct 11 update)
 
@@ -229,7 +240,7 @@ in `benchmarks/genmul64/` (gzipped AIGER, made with `verify/gen_genmul.py` and y
 
 | | proved CORRECT | median time | with a checked certificate |
 |---|---|---|---|
-| **Parat** | **27 of 28** | 0.45 s (max 10 s) | 8 |
+| **Parat** (Oct 12 update) | **27 of 28** | 0.45 s (max 11.5 s) | **27** (Oct 11: 8) |
 | AMulet2 | 8 of 28 | 1.3 s on those 8 | 8 |
 
 - AMulet2 ran out of time on 16 designs and stopped without an answer on 4 (all the fast adders: Kogge-Stone,
@@ -237,15 +248,16 @@ in `benchmarks/genmul64/` (gzipped AIGER, made with `verify/gen_genmul.py` and y
 - On the 8 designs both prove, Parat is faster on all 8: counter-tree designs 3.3 s vs 110–135 s, the others
   0.2–0.4 s vs 0.4–1.5 s.
 - **Not proved by Parat:** Wallace + carry-lookahead (time-out). AMulet2 does not prove it either.
-- **Certificates:** designs with a fast final adder are proved with one kind of step that has no certificate form
-  yet. Parat then says so and writes nothing, and the answer is not checked independently. For two counter-tree
-  designs the certificate would be over 80 MB per line, which pacheck2 cannot read, so it is not written.
+- **Certificates (Oct 12 update):** every proved design now gets a certificate that pacheck2 checks, including the
+  fast final adders (Kogge-Stone, Brent-Kung, Ladner-Fischer, carry-lookahead, carry-skip) and the counter-tree
+  designs. Some are large: 2 MB to 1.3 GB (`results/genmul64_pac_oct12.txt`); pacheck2 needs up to a few minutes for
+  the largest. On the Oct 11 build, designs with a fast final adder got no certificate.
 - **Broken designs:** `*_buggy.aag.gz` (one gate input inverted): Parat answers INCORRECT with a counterexample
   (a, b, circuit output, a × b).
 - **Soundness tests in the lab:** 540 random GenMul designs (3–10 bits, 28 architectures, most with one broken gate),
   referee = simulation on **all** 2^(2·width) inputs: 0 wrong answers, every counterexample re-simulated, every
   certificate CHECKED.
-- Full table: `results/genmul64_race.txt`.
+- Full table: `results/genmul64_race.txt` (Oct 11) and `results/genmul64_pac_oct12.txt` (certificates, Oct 12).
 
 ### 7. Scorecard: every category, one table (Oct 11)
 
@@ -264,6 +276,31 @@ One core per run, same machine, every SAT answer checked clause by clause; full 
 
 Where Parat is slower: prime factoring and sudoku (Kissat, CaDiCaL), colouring files (about even), and on 40 of the
 143 structured files Kissat is faster.
+
+**Oct 12 re-run** (`results/scorecard_oct12.txt`, Parat only; the others from Oct 11): structured 140/143 solved
+(was 137), PAR-2 2.66 (was 3.80), faster than Kissat on 107 files and slower on 29; circuits PAR-2 0.38 (was 0.46);
+random "no answer" faster than march_nh on 5 of 6. Cost: colouring files without an answer are about 1.8x slower.
+
+### 8. Oct 12 update: what changed
+
+| area | before (Oct 11) | now (Oct 12) | file |
+|---|---|---|---|
+| GenMul 64-bit, unsigned: certificates | 8 of 28 | **27 of 28** (all proved designs) | `results/genmul64_pac_oct12.txt` |
+| GenMul 64-bit, signed | not supported | **26 of 27 proved and certified** (AMulet2 `-signed`: 11) | `results/genmul64_signed_race.txt` |
+| bugs that fire on ~1 input in 2^20 | "unknown" | **counterexample on 6 of 8**, 2–16 s | `results/rare_bugs_oct12.txt` |
+| random "no answer", ratio 4.26, n=380 (7 files) | 131.8 s (march_nh 112.9 s) | **106–112 s** | `results/random426_unsat_vs_march_oct12.txt` |
+| random with answer, n=1000, ratio 4.26 (20 × 3) | — | **60/60, mean 2.73 s** (probSAT 2.84, YalSAT 3.66) | `results/random1000_426_race_oct12.jsonl` |
+| 5 big industrial files (50–139 MB, mostly reading time), best of 3 | 5.97 s (Kissat 5.06 s) | **4.70 s** | lab measurement |
+| Windows | WSL only | **native `.exe`** (one core) | `bin/` |
+
+- How the signed results were checked: 210 random signed designs (8-bit, most with one broken gate) against
+  simulation on all 2^16 inputs: 0 wrong answers. The unsigned soundness tests were repeated on the final build
+  (25 + 40 designs): 0 wrong answers, every certificate CHECKED.
+- 170 general files: the Oct 12 build and the Oct 11 release give the same answer on every file they both finish,
+  and every SAT answer was checked clause by clause.
+- In the signed race AMulet2 printed no verdict on 3 designs and pacheck2 rejected the certificates it wrote there;
+  this may be a problem in how it was run here. Part of that race ran while another job shared the machine, so its
+  times may be inflated (for both tools); clean Parat times are listed at the end of the file.
 
 ## Reproduce everything
 
@@ -325,15 +362,17 @@ Ask via an issue titled "Commercial license" (see below).
     algebraic argument for multiplier circuits. Files that only those methods can solve end as "unknown" in proof
     mode instead of an unchecked UNSAT.
 - **Multiplier mode:**
-  - It handles unsigned multipliers given as AND-inverter graphs (`.aag`), with inputs a then b.
-  - It was tested on array, Wallace and Booth designs up to 128 bits, and on the 28 GenMul architectures at 64 bits
-    (27 proved). Signed multipliers are not supported yet.
-  - Certificates are written only when every step has a certificate form (see section 6). Otherwise Parat prints
-    the reason and writes nothing.
-  - For a broken design Parat looks for a counterexample. On large designs where both the algebra and the search
-    run out of time, the answer is "unknown" (no claim either way).
+  - It handles unsigned and signed (two's complement) multipliers given as AND-inverter graphs (`.aag`), with
+    inputs a then b. Other encodings (for example sign-magnitude) are not supported.
+  - It was tested on array, Wallace and Booth designs up to 128 bits, and on the 28 unsigned and 27 signed GenMul
+    architectures at 64 bits (27 and 26 proved). Wallace + carry-lookahead is not proved, signed or unsigned.
+  - Certificates are written only when every step has a certificate form. Otherwise Parat prints the reason and
+    writes nothing. Some certificates are large (up to 1.3 GB at 64 bits).
+  - For a broken design Parat looks for a counterexample. On large designs where every method runs out of time,
+    the answer is "unknown" (no claim either way). Bugs that fire on very few inputs are found on most, not all,
+    test designs (`results/rare_bugs_oct12.txt`).
 - **Proof files are big** (GBs at n=500). drat-trim needs about 1–2x the solve time to check them.
-- **Platform:** a Linux x86-64 binary only.
+- **Platform:** Linux x86-64, and Windows x86-64 (new; one core; tested so far on one Windows PC).
 
 ## Acknowledgements
 
