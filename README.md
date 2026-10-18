@@ -445,7 +445,8 @@ Ask via an issue titled "Commercial license" (see below).
 - **Multiplier netlists optimised by ABC** (yosys's default `synth`) are a hard case: a 16-bit one timed out
   (AMulet2 also timed out on 12 bits). See "Your own multiplier" above.
 - **Proof files are big** (GBs at n=500). drat-trim needs about 1–2x the solve time to check them.
-- **Platform:** Linux x86-64, and Windows x86-64 (new; one core; tested so far on one Windows PC).
+- **Platform:** Linux x86-64, and Windows x86-64 (one core; tested on one Windows PC: the 100,000-variable
+  b100k_422_1 file in 21.3 s, Linux 19.4 s).
 
 ## Acknowledgements
 
