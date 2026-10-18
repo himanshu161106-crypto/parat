@@ -1,11 +1,15 @@
 # yosys Booth-encoded multipliers (synth -booth, radix-4), unsigned, Update 6 release binary, one core. Oct 18 2026.
 # yosys (yowasp-yosys 0.69): read_verilog; hierarchy -top mb; synth -flatten -top mb -booth [-noabc]; aigmap; opt_clean; write_aiger -ascii
 # certificate: --pac, then pacheck2 (TARGET CHECKED = accepted).
+# files: benchmarks/yosys_booth/ (booth<W>_noabc / booth<W>_abc).
 # design                  | result             | proof (no --pac) | with --pac | certificate
 32-bit -booth -noabc      | CORRECT MULTIPLIER | 0.14 s           | 0.34 s     | TARGET CHECKED, 3.3 MB
 64-bit -booth -noabc      | CORRECT MULTIPLIER | 0.57 s           | 2.2 s      | TARGET CHECKED, 30 MB
 128-bit -booth -noabc     | CORRECT MULTIPLIER | 1.5 s            | 22 s       | TARGET CHECKED, 283 MB (pacheck2 5 min 17 s)
 32-bit -booth (with ABC)  | CORRECT MULTIPLIER | 0.27 s           | 0.24 s     | TARGET CHECKED, 2.8 MB
+40-bit -booth (with ABC)  | UNKNOWN (time-out) | > 60 s           | -          | -
+48-bit -booth (with ABC)  | CORRECT MULTIPLIER | 0.10 s           | -          | -
+56-bit -booth (with ABC)  | UNKNOWN (time-out) | > 60 s           | -          | -
 64-bit -booth (with ABC)  | UNKNOWN (time-out) | > 300 s          | -          | -
 # Before Update 6 the -noabc designs were proved but no certificate was written ("one step has no certificate form yet").
 # Regression (release binary; the fuzz run used the lab build of the same code): benchmarks/multipliers (11 files) all certificates TARGET CHECKED, broken ones INCORRECT;

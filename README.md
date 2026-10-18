@@ -116,6 +116,8 @@ bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pa
   | 128-bit, `-booth -noabc` | proved, 1.5 s | pacheck2 TARGET CHECKED (283 MB, check 5 min) | not run |
   | 64-bit, `-booth` | time-out | — | not run |
 
+  The files are in `benchmarks/yosys_booth/` (with `make.sh` to rebuild them). With ABC on, 32 and 48 bits are
+  proved; 40, 56 and 64 bits time out.
   Update 6 (Oct 18): the `-noabc` Booth designs now get a certificate too (before: "one step has no certificate
   form yet"). Certificate time with `--pac`: 0.3 s (32-bit), 2.2 s (64-bit), 22 s (128-bit).
 
