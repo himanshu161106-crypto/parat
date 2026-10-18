@@ -106,6 +106,17 @@ bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pa
 - A gate-level netlist of your own design: replace `synth ... -noabc` by `proc; flatten; techmap; aigmap; opt_clean`,
   so that yosys keeps your gates as they are.
 - Port order matters: declare `a` before `b`, and keep the product as the only output.
+- **Booth-encoded multipliers from yosys** (`synth -booth`, radix-4 Booth; tested Oct 18, one core, 300 s):
+
+  | design | Parat | certificate | AMulet2 (`-verify`) |
+  |---|---|---|---|
+  | 32-bit, `-booth -noabc` | proved, 0.14 s | not written ("one step has no certificate form yet") | time-out |
+  | 32-bit, `-booth` | proved, 0.27 s | pacheck2 TARGET CHECKED | time-out |
+  | 64-bit, `-booth -noabc` | proved, 0.57 s | not written | time-out |
+  | 64-bit, `-booth` | time-out | — | not run |
+
+  The `booth64` / `booth128` files in `benchmarks/multipliers/` are radix-4 Booth too, but their partial products
+  are added with ripple adders (a simpler structure); GenMul itself has no Booth option.
 - **Known limit:** with yosys's default `synth` (which runs ABC logic optimisation) the adder structure is rewritten.
   On a 16-bit multiplier Parat then times out (60 s), and so does AMulet2 on 12 bits (120 s); with `-noabc` or
   `-booth`, or the plain `techmap` flow, Parat proves the same 16-bit multiplier. Optimised netlists are a known hard
