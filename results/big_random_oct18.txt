@@ -1,0 +1,11 @@
+# Oct 18 2026, release binary of Update 5, one core (taskset -c 0), same machine.
+# Files: benchmarks/big_random/ (100,000 variables) or verify/gen_random3.c N RATIO SEED (byte-identical).
+# Time = wall time of the whole run (reading the file included); answer checked with verify/check_model.py.
+# file | answer | time | check
+b100k_422_1 | s SATISFIABLE | 19.428392543 s | OK: all 422000 clauses satisfied
+b100k_425_1 | s SATISFIABLE | 55.039854095 s | OK: all 425000 clauses satisfied
+b100k_425_2 | s SATISFIABLE | 166.935105607 s | OK: all 425000 clauses satisfied
+b100k_425_3 | s SATISFIABLE | 83.471823783 s | OK: all 425000 clauses satisfied
+b100k_425_4 | s SATISFIABLE | 679.486065630 s | OK: all 425000 clauses satisfied
+g1m_422_1 | s SATISFIABLE | 235.706788783 s | OK: all 4220000 clauses satisfied
+g10m_422_1 | s SATISFIABLE | 3424.175675513 s | OK: all 42200000 clauses satisfied

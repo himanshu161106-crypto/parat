@@ -12,6 +12,7 @@
 | `genmul64_signed/` | 27 | the signed (two's complement) GenMul designs at 64 bits (GenMul makes no signed array + carry-skip) | `verify/gen_genmul.py 64 out/ 1` |
 | `rare_bugs/` | 3 | 64-bit GenMul designs with a planted bug that changes the output only when 18-24 given input bits all match (random testing practically never sees it) | lab script: one gate input XORed with an AND of k random input literals |
 | `random426_n380/` | 16 | uniform random 3-SAT, n=380, ratio 4.26 (seeds 770001-770016). No answer: v380_9 ... v380_15; the other 9 have one | lab generator (files included) |
+| `big_random/` | 5 | uniform random 3-SAT with 100,000 variables: ratio 4.22 seed 1, ratio 4.25 seeds 1-4 (gzipped). The 1,000,000 and 10,000,000-variable files of the Oct 18 table are too big for git: make them with the generator | `gcc -O2 -o gen_random3 verify/gen_random3.c` then `./gen_random3 100000 4.25 1 > b100k_425_1.cnf` (also `1000000 4.22 1`, `10000000 4.22 1`); byte-identical to the files used |
 | `fresh_n1000_426/` | 20 | uniform random 3-SAT, n=1000, ratio 4.26, the 20 of 40 fresh files (seeds 5550001-5550040) that some solver solved in 30 s (Parat, probSAT or YalSAT, one seed each) | lab generator (files included) |
 
 **Do the regenerated files match?** The random sets can be regenerated with the given seeds, and the clauses come out

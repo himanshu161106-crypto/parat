@@ -27,6 +27,14 @@ Each run was pinned to one core, with 2 runs at once on a 2-core Linux x86-64 ma
 | drat_verify_general_72.txt | the 72 UNSAT files of the 258-file check: 67 s VERIFIED; the 5 multiplier miters end "unknown" in proof mode |
 | drat_verify_general_67_release.txt | the final release binary on `benchmarks/general_unsat/` with `verify/verify_all_unsat.sh`: 67 VERIFIED, 0 not verified |
 
+## Oct 18 update (Update 5)
+
+| file | what |
+|---|---|
+| `big_random_oct18.txt` | release binary, one core: 100,000 variables (ratio 4.22 and 4.25 x4), 1,000,000 and 10,000,000 variables at 4.22; every answer checked |
+| `big_random_sp_races_oct17.jsonl` | the original survey-propagation solver (sp-1.4), YalSAT, probSAT and the previous Parat on the same files |
+| `big_random_switch_race_oct17.jsonl` | lab race that set where the new engine starts (n = 10,000 to 50,000) |
+
 ## Oct 12 update
 
 | file | what |

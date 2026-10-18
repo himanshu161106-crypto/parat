@@ -1,0 +1,13 @@
+{"solver": "probsat", "file": "b100k_422_1.cnf", "result": "UNKNOWN", "time": 302.01, "limit": 300.0}
+{"solver": "yalsat", "file": "b100k_422_1.cnf", "result": "UNKNOWN", "time": 302.0, "limit": 300.0}
+{"solver": "sp:1", "file": "b100k_422_1.cnf", "result": "SAT", "time": 114.06, "limit": 300.0}
+{"solver": "parat", "file": "b100k_422_1.cnf", "result": "SAT", "time": 121.34, "limit": 300.0}
+{"solver": "sp:1", "file": "g1m_422_1.cnf", "result": "SAT", "time": 1742.36, "limit": 3600.0}
+{"solver": "sp:1", "file": "b100k_425_1.cnf", "result": "SAT", "time": 111.69, "limit": 600.0}
+{"solver": "sp:1", "file": "b100k_425_2.cnf", "result": "UNKNOWN", "time": 191.71, "limit": 600.0}
+{"solver": "sp:1", "file": "b100k_425_3.cnf", "result": "UNKNOWN", "time": 165.95, "limit": 600.0}
+{"solver": "sp:1", "file": "b100k_425_4.cnf", "result": "UNKNOWN", "time": 192.15, "limit": 600.0}
+{"solver": "sp:0.1", "file": "b100k_425_1.cnf", "result": "SAT", "time": 281.76, "limit": 1200.0}
+{"solver": "sp:0.1", "file": "b100k_425_2.cnf", "result": "UNKNOWN", "time": 303.72, "limit": 1200.0}
+{"solver": "sp:0.1", "file": "b100k_425_3.cnf", "result": "UNKNOWN", "time": 293.92, "limit": 1200.0}
+{"solver": "sp:0.1", "file": "b100k_425_4.cnf", "result": "UNKNOWN", "time": 264.46, "limit": 1200.0}

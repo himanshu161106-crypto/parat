@@ -10,6 +10,14 @@ Parat reads a formula in DIMACS CNF and answers one of three things:
 It is built for the hardest region of random 3-SAT, near the threshold (clause/variable ratio 4.2–4.26). It also
 solves structured and industrial files correctly.
 
+> **Who built this.** The code was written by AI (Claude, made by Anthropic), under my direction. My part (Himanshu,
+> a student): the ideas and the math behind them (for example the +/−/neutral "signal" for each variable, which turned
+> out close to survey propagation; reading a variable flip as a Boolean derivative; the "answer is about n/2.5 flips
+> away" pattern), choosing what to attack and in what order, running and checking every race, and deciding what to
+> publish, limits included. Many parts are standard methods from the SAT literature (see
+> [Acknowledgements](#acknowledgements)). No result here depends on trusting the code: answers, DRAT proofs and
+> multiplier certificates are all checked by independent tools.
+
 ```
 $ bin/parat-linux-x86_64 benchmarks/wall426/w400_2.cnf --proof w400_2.drat --proof-binary
 s UNSATISFIABLE                                   # 34.7 s on one core
@@ -31,8 +39,13 @@ s VERIFIED                                        # 62 s, independent checker
   - n=500: 142 s vs 169 s for march_nh.
   - New (Oct 12): 7 fresh files at n=380: Parat 106–112 s in total (two runs), march_nh 113 s; Parat needed 132 s
     before this update. Level with march, slightly ahead.
-- **Big random files with an answer (new):** at 100,000 variables Parat solves 6 of 6 runs (82 s on average);
-  YalSAT and probSAT solve none in 120 s.
+- **Very large random files with an answer (new, Oct 18):** a new engine inside Parat for random 3-SAT with 10,000
+  or more variables. One core, every answer checked clause by clause:
+  - **10 million variables**, ratio 4.22: **3424 s** (57 minutes), 42.2 million rules.
+  - 1 million variables, ratio 4.22: **236 s**; the original survey-propagation solver (Braunstein, Mézard,
+    Zecchina): 1742 s.
+  - 100,000 variables, ratio 4.25: **4 of 4** files (55–679 s); the original SP solver: 1 of 4.
+  - YalSAT and probSAT did not solve even the 100,000-variable, ratio 4.22 file in 300 s.
 - **Files that have an answer:**
   - Clearly ahead of probSAT: faster on 13 of 16 hard files, p = 0.01.
   - Level with YalSAT, with a small lead that is not statistically proven.
@@ -76,6 +89,27 @@ bash verify/verify_unsat.sh benchmarks/wall426/w400_2.cnf drat-trim/drat-trim   
 git clone https://github.com/d-kfmnn/pacheck2 && (cd pacheck2 && ./configure.sh && make)   # needs g++ and libgmp-dev
 bash verify/verify_multiplier.sh benchmarks/multipliers/booth64.aag pacheck2/pacheck   # -> TARGET CHECKED
 ```
+
+### Your own multiplier: from Verilog to AIGER
+
+Parat reads multipliers as ASCII AIGER (`.aag`), inputs **a** then **b** (least significant bit first), outputs the
+product bits. [yosys](https://github.com/YosysHQ/yosys) converts Verilog (RTL or a gate-level netlist) to AIGER.
+`pip install yowasp-yosys` gives a ready-made yosys (`yowasp-yosys`); a normal `yosys` install works the same way.
+
+```bash
+# mult.v:  module mult(input [15:0] a, input [15:0] b, output [31:0] p); assign p = a * b; endmodule
+yosys -q -p "read_verilog mult.v; hierarchy -top mult; synth -flatten -top mult -noabc; aigmap; opt_clean; write_aiger -ascii -symbols mult.aag"
+bin/parat-linux-x86_64 mult.aag 1 300                    # -> s CORRECT MULTIPLIER  (or a counterexample)
+bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pacheck2
+```
+
+- A gate-level netlist of your own design: replace `synth ... -noabc` by `proc; flatten; techmap; aigmap; opt_clean`,
+  so that yosys keeps your gates as they are.
+- Port order matters: declare `a` before `b`, and keep the product as the only output.
+- **Known limit:** with yosys's default `synth` (which runs ABC logic optimisation) the adder structure is rewritten.
+  On a 16-bit multiplier Parat then times out (60 s), and so does AMulet2 on 12 bits (120 s); with `-noabc` or
+  `-booth`, or the plain `techmap` flow, Parat proves the same 16-bit multiplier. Optimised netlists are a known hard
+  case for algebraic methods.
 
 **Command line:**
 - Usage: `parat file.cnf [seed] [time_limit_s] [--proof proof.drat] [--proof-binary]`.
@@ -302,6 +336,36 @@ random "no answer" faster than march_nh on 5 of 6. Cost: colouring files without
   this may be a problem in how it was run here. Part of that race ran while another job shared the machine, so its
   times may be inflated (for both tools); clean Parat times are listed at the end of the file.
 
+### 9. Oct 18 update: very large random 3-SAT with an answer
+
+Parat now has a second engine for random 3-SAT (every rule has 3 literals) with **10,000 or more variables**. On one
+core it is the only engine; with several cores it runs on one core while the others run the usual engines, and the
+first answer wins. It only looks for answers: a formula with no answer ends as "unknown". Every answer is checked
+against every rule before it is printed, and again here by `verify/check_model.py`.
+
+Release binary, one core (`taskset -c 0`), same machine; the files are made with `verify/gen_random3.c`
+(`./gen_random3 N RATIO SEED > file.cnf` gives the same file again); the 100,000-variable files are in
+`benchmarks/big_random/`:
+
+| file | variables | ratio | Parat (this update) | original SP solver (sp-1.4, `-%1`) | Parat before this update | YalSAT / probSAT |
+|---|---|---|---|---|---|---|
+| b100k_422_1 (seed 1) | 100,000 | 4.22 | **19.4 s** | 114.1 s | 121.3 s | not solved in 300 s |
+| b100k_425_1..4 (seeds 1–4) | 100,000 | 4.25 | **4 of 4**: 55, 167, 83, 679 s | 1 of 4 (112 s; with 0.1% steps also 1 of 4) | — | — |
+| g1m_422_1 (seed 1) | 1,000,000 | 4.22 | **235.7 s** | 1742.4 s | — | — |
+| g10m_422_1 (seed 1) | 10,000,000 | 4.22 | **3424.2 s** | not run | — | — |
+
+- The original SP solver gives up (without an answer) on b100k_425_2..4 in 3–5 minutes; time limit 600 s (1200 s
+  with 0.1% steps). Raw results: `results/big_random_oct18.txt`, `results/big_random_sp_races_oct17.jsonl`.
+- Where the new engine starts (10,000 variables) was chosen by a race of the lab builds on 12 files (n = 10,000 to
+  50,000, ratio 4.20 and 4.24, 120 s): the new engine solved 10, the old Parat 7; the old Parat was faster on the
+  easy 10,000-variable files (`results/big_random_switch_race_oct17.jsonl`).
+- Lab runs of the engine (before the release build): 1,000,000 variables at ratio 4.24 in 265 s and at 4.25 in
+  946 s; 10,000,000 variables at 4.24 in 4635 s.
+- Fairness note: some of the original SP solver's runs (Oct 17) and two of the 100,000-variable Parat runs shared the
+  machine (2 cores) with other jobs part of the time, so those times may be somewhat inflated. The 1,000,000 and
+  10,000,000-variable Parat runs had the machine to themselves.
+- **Ratio 4.26** is not solved yet at these sizes (1,000,000 variables, seed 1: no answer after the first 44 minutes).
+
 ## Reproduce everything
 
 ```bash
@@ -326,6 +390,11 @@ python3 verify/race.py --limit 60 --seeds 5 \
 **Is the source code available?**
 Not publicly. The binary, the benchmarks and the checking tools are. Every claim can be checked without the source:
 SAT answers by the clause checker, UNSAT answers by drat-trim.
+
+**Was this written by AI?**
+Yes, the code was written by AI (Claude). The ideas, the math behind them and the direction are mine (Himanshu),
+see "Who built this" at the top. The results do not depend on that: every answer, proof and certificate is checked
+by independent tools you can run yourself.
 
 **Does this prove P = NP?**
 No. Parat is fast in the measured region, but its running time on hard random formulas still grows exponentially
@@ -371,12 +440,18 @@ Ask via an issue titled "Commercial license" (see below).
   - For a broken design Parat looks for a counterexample. On large designs where every method runs out of time,
     the answer is "unknown" (no claim either way). Bugs that fire on very few inputs are found on most, not all,
     test designs (`results/rare_bugs_oct12.txt`).
+- **Very large random files (new engine):** it only finds answers; with no answer it ends as "unknown". It is made for
+  random 3-SAT; other formulas never use it. Ratio 4.26 at a million variables or more is not solved yet.
+- **Multiplier netlists optimised by ABC** (yosys's default `synth`) are a hard case: a 16-bit one timed out
+  (AMulet2 also timed out on 12 bits). See "Your own multiplier" above.
 - **Proof files are big** (GBs at n=500). drat-trim needs about 1–2x the solve time to check them.
 - **Platform:** Linux x86-64, and Windows x86-64 (new; one core; tested so far on one Windows PC).
 
 ## Acknowledgements
 
 - Parat builds on many published ideas from the SAT literature.
+- The large random engine builds on survey propagation (Braunstein, Mézard, Zecchina, 2005) and backtracking survey
+  propagation (Marino, Parisi, Ricci-Tersenghi, 2016). The original SP code (sp-1.4) was used for the comparison.
 - The comparisons use Kissat and CaDiCaL (Armin Biere and others), march (Marijn Heule), YalSAT (Armin Biere) and
   probSAT (Adrian Balint).
 - The proofs are checked with drat-trim (Marijn Heule, Nathan Wetzler, Warren Hunt).

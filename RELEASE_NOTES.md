@@ -1,3 +1,30 @@
+# Update 5, Oct 18 2026: very large random 3-SAT, Verilog how-to, who built it
+
+**Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe`.
+
+## New
+- **A second engine for random 3-SAT with 10,000+ variables** (only for formulas where every rule has 3 literals;
+  it only finds answers). One core, release binary, every answer checked:
+  10,000,000 variables at ratio 4.22: 3424 s; 1,000,000 at 4.22: 236 s (original survey-propagation solver:
+  1742 s); 100,000 at 4.25: 4 of 4 files (original SP solver: 1 of 4). Table: README section 9.
+- **`verify/gen_random3.c`:** seeded generator that rebuilds the big files byte for byte.
+- **README "Your own multiplier: from Verilog to AIGER"**: tested yosys commands (thanks to a reader on r/chipdesign).
+- **README "Who built this"**: the code was written by AI (Claude); the ideas, the math and the direction are
+  Himanshu's.
+
+## Checks on the final build
+- Every big random answer checked clause by clause (`results/big_random_oct18.txt`); the generator rebuilds every
+  big file byte for byte.
+- 67 of 67 files in `benchmarks/general_unsat/` still answered UNSAT; booth64 certificate: pacheck2 TARGET CHECKED;
+  the README's yosys commands tested end to end (16-bit multiplier proved, certificate TARGET CHECKED).
+- Release smoke test (every README command from a fresh copy): 15 of 15 passed.
+- The binary was scanned: no method names in its strings.
+
+## Honest limits
+- The new engine does not prove "no answer", and ratio 4.26 at a million variables or more is not solved yet.
+- Multiplier netlists optimised by ABC (yosys's default `synth`) time out (16 bits; AMulet2 also times out on 12).
+- Everything from Update 4 still applies (factoring vs Kissat, Wallace + carry-lookahead, certificate size).
+
 # Update 4, Oct 12 2026: certificates for every proved GenMul design, signed multipliers, Windows
 
 **Download:** `bin/parat-linux-x86_64` and, new, `bin/parat-windows-x86_64.exe` (also attached to the v1.0 release page).
