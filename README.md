@@ -110,10 +110,14 @@ bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pa
 
   | design | Parat | certificate | AMulet2 (`-verify`) |
   |---|---|---|---|
-  | 32-bit, `-booth -noabc` | proved, 0.14 s | not written ("one step has no certificate form yet") | time-out |
+  | 32-bit, `-booth -noabc` | proved, 0.14 s | pacheck2 TARGET CHECKED (3.3 MB) | time-out |
   | 32-bit, `-booth` | proved, 0.27 s | pacheck2 TARGET CHECKED | time-out |
-  | 64-bit, `-booth -noabc` | proved, 0.57 s | not written | time-out |
+  | 64-bit, `-booth -noabc` | proved, 0.57 s | pacheck2 TARGET CHECKED (30 MB) | time-out |
+  | 128-bit, `-booth -noabc` | proved, 1.5 s | pacheck2 TARGET CHECKED (283 MB, check 5 min) | not run |
   | 64-bit, `-booth` | time-out | — | not run |
+
+  Update 6 (Oct 18): the `-noabc` Booth designs now get a certificate too (before: "one step has no certificate
+  form yet"). Certificate time with `--pac`: 0.3 s (32-bit), 2.2 s (64-bit), 22 s (128-bit).
 
   The `booth64` / `booth128` files in `benchmarks/multipliers/` are radix-4 Booth too, but their partial products
   are added with ripple adders (a simpler structure); GenMul itself has no Booth option.

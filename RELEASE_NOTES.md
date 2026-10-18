@@ -1,3 +1,21 @@
+# Update 6, Oct 18 2026: certificates for yosys Booth multipliers
+
+**Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe`.
+
+## Fixed
+- **yosys Booth multipliers (`synth -booth -noabc`) now get a certificate.** Before, Parat proved them but wrote
+  no certificate ("one step has no certificate form yet"). Now 32, 64 and 128 bits: pacheck2 TARGET CHECKED
+  (`results/yosys_booth_pac_oct18.txt`). 128-bit: proved in 1.5 s, certificate in 22 s (283 MB).
+
+## Checks on the final build
+- benchmarks/multipliers: every certificate TARGET CHECKED, broken designs INCORRECT; 200 random fuzz designs:
+  0 problems; 4 GenMul designs re-checked (same certificate sizes as before); 67 of 67 UNSAT files still UNSAT.
+- Release smoke test: 15 of 15 passed. No method names in the binary's strings.
+
+## Still open
+- 64-bit `synth -booth` with ABC and other ABC-optimised netlists still time out. Wallace + carry-lookahead is still
+  not proved. Ratio 4.26 at a million variables is not solved yet.
+
 # Update 5, Oct 18 2026: very large random 3-SAT, Verilog how-to, who built it
 
 **Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe`.
