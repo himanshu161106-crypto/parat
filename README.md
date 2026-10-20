@@ -34,9 +34,7 @@ solves structured and industrial files correctly.
 - Some certificates are large (hundreds of MB at 128 bits). Details and numbers: [Results](#results) and [Limits](#limits).
 
 > **Who built this.** The code was written by AI (Claude, made by Anthropic), under my direction. My part (Himanshu,
-> a student): the ideas and the math behind them (for example the +/−/neutral "signal" for each variable, which turned
-> out close to survey propagation; reading a variable flip as a Boolean derivative; the "answer is about n/2.5 flips
-> away" pattern), choosing what to attack and in what order, running and checking every race, and deciding what to
+> a student): the ideas and the math behind them, choosing what to attack and in what order, running and checking every race, and deciding what to
 > publish, limits included. Many parts are standard methods from the SAT literature (see
 > [Acknowledgements](#acknowledgements)). No result here depends on trusting the code: answers, DRAT proofs and
 > multiplier certificates are all checked by independent tools.
@@ -174,12 +172,9 @@ bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pa
   Exit code 0 / 1.
 - `--pac prefix` writes `prefix.polys`, `prefix.proof`, `prefix.spec` (Practical Algebraic Calculus) when the answer is
   CORRECT. Check with `pacheck prefix.polys prefix.proof prefix.spec`.
-  - Update 7: for some ABC-optimised designs Parat proves a second circuit, `prefix.new.aag`, and shows with SAT that
-    it gives the same outputs as yours. Then the PAC files are for `prefix.new.aag`, and Parat also writes
-    `prefix.eq<k>.cnf` + `prefix.eq<k>.drat` (one pair per 32 outputs; each CNF is UNSAT exactly when those outputs
-    are equal). `verify/verify_multiplier.sh` checks all of it: pacheck2 for the PAC part, and for every SAT file it
-    rebuilds the CNF itself from your circuit (`verify/eq_cnf.py`, 51 lines of Python, no Parat code), compares it byte for
-    byte with Parat's, and checks the proof with drat-trim.
+  - Update 7: for ABC-optimised designs the certificate has an extra part (more files under the same prefix). It is
+    checked the same way, by the independent tools; `verify/verify_multiplier.sh` runs every check for you
+    (pacheck2 and drat-trim), using only your own circuit file.
 - Signed or unsigned: Parat decides by simulating the circuit (and prints `c specification: signed ...` for signed);
   `--signed` / `--unsigned` force it. The certificate's target then uses the matching specification.
 
@@ -421,9 +416,8 @@ Release binary, one core (`taskset -c 0`), same machine; the files are made with
 
 ### 10. Oct 20 (Update 7): multipliers optimised by ABC
 
-**The case:** yosys's default flow runs ABC, which rewrites the final adder of a multiplier (for example a sum bit
-becomes p XOR (g OR p·c) with no gate for the carry itself). Algebraic checkers rely on that structure; before this
-update Parat timed out on these designs from 40 bits up, and AMulet2 times out already on small ones.
+**The case:** yosys's default flow runs ABC, which optimises the adder structure. Before this update Parat timed
+out on these designs from 40 bits up, and AMulet2 times out already on small ones.
 
 Same machine; 2 cores = the lab build of the release sources, 1 core = the release binary with `taskset -c 0`;
 time limit 1500 s. Files in `benchmarks/yosys_booth/` (`make.sh N abc`, yowasp-yosys 0.69, `synth -booth` with ABC on):
