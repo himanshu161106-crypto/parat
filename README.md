@@ -10,6 +10,29 @@ Parat reads a formula in DIMACS CNF and answers one of three things:
 It is built for the hardest region of random 3-SAT, near the threshold (clause/variable ratio 4.2–4.26). It also
 solves structured and industrial files correctly.
 
+### What Parat can do (v1.2, Update 7)
+
+| task | how to run | what you get | how you check it without trusting Parat |
+|---|---|---|---|
+| Solve a SAT formula (DIMACS CNF) | `parat file.cnf` | an answer, or "no answer" | `verify/check_model.py` checks the answer |
+| Prove "no answer" | `parat file.cnf --proof p.drat` | UNSAT + a DRAT proof | drat-trim |
+| Prove a gate-level multiplier correct (`.aag`), up to 256 × 256 bits, unsigned or signed | `parat mult.aag 1 300` | CORRECT, or INCORRECT with a counterexample input | the counterexample can be simulated |
+| ... with a certificate | `parat mult.aag 1 300 --pac cert` | PAC certificate (+ DRAT files for ABC-optimised designs) | `verify/verify_multiplier.sh` (pacheck2, drat-trim, `verify/eq_cnf.py`) |
+| Very large random 3-SAT (10,000 to 10,000,000 variables) | `parat big.cnf` | an answer (this engine does not prove "no answer") | `verify/check_model.py` |
+
+**Strongest where:**
+- Hard random 3-SAT near the threshold: proving "no answer" level with march_nh, far ahead of CDCL solvers.
+- Very large random 3-SAT with an answer: 1,000,000 variables at ratio 4.22 in 236 s (the original SP solver: 1742 s).
+- Multipliers: array, Wallace, Booth and the GenMul family (27 of 28 at 64 bits); 128-bit designs in seconds with
+  certificates; since Update 7 also yosys Booth multipliers optimised by ABC (32–128 bits; AMulet2 times out on them).
+
+**Weaker / not done yet:**
+- Factoring circuits and sudoku files: Kissat is about 1.6–1.8x faster. Large industrial competition files were not
+  raced widely (small industrial files: Parat was faster, see [section 4](#4-general-files)).
+- Random 3-SAT at ratio 4.26 with a million variables or more: not solved yet.
+- Multipliers: Wallace + carry-lookahead (GenMul `wt-cl`) not proved; other ABC netlists may still time out.
+- Some certificates are large (hundreds of MB at 128 bits). Details and numbers: [Results](#results) and [Limits](#limits).
+
 > **Who built this.** The code was written by AI (Claude, made by Anthropic), under my direction. My part (Himanshu,
 > a student): the ideas and the math behind them (for example the +/−/neutral "signal" for each variable, which turned
 > out close to survey propagation; reading a variable flip as a Boolean derivative; the "answer is about n/2.5 flips
