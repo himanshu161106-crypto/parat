@@ -61,6 +61,12 @@ s VERIFIED                                        # 62 s, independent checker
     with 300 s per design. **New (Oct 12): all 27 now come with a certificate that pacheck2 checks** (before: 8).
   - **New (Oct 12): signed multipliers** (two's complement, detected automatically): 26 of the 27 signed GenMul
     designs proved and certified; AMulet2 with `-signed`: 11.
+- **New (Oct 20, Update 7): multipliers optimised by ABC** (yosys's default `synth`), the case that timed out before:
+  - yosys `synth -booth` (ABC on), 32/40/48/56/64-bit: all proved (0–64 s); **128-bit (128,350 AND gates): proved in
+    110 s**, with a certificate in 126 s (pacheck2 TARGET CHECKED + 8 of 8 DRAT files VERIFIED by drat-trim).
+  - **256-bit multipliers** are now supported (512-bit output): a 505,552-gate Booth design is proved in 6 s.
+  - Broken versions (one gate changed) are answered INCORRECT with a counterexample in 8–22 s.
+  - Details: [section 10](#10-oct-20-update-7-multipliers-optimised-by-abc).
 - **Nothing to trust blindly.** The repo has everything needed to redo each table on your own machine:
   - an answer checker,
   - a seeded file generator,
@@ -117,16 +123,17 @@ bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pa
   | 64-bit, `-booth` | time-out | — | not run |
 
   The files are in `benchmarks/yosys_booth/` (with `make.sh` to rebuild them). With ABC on, 32 and 48 bits are
-  proved; 40, 56 and 64 bits time out.
+  proved; 40, 56 and 64 bits time out. **Update 7 (Oct 20): all `-booth` designs with ABC on, 32 to 128 bits, are now
+  proved, with a certificate** (see [section 10](#10-oct-20-update-7-multipliers-optimised-by-abc)).
   Update 6 (Oct 18): the `-noabc` Booth designs now get a certificate too (before: "one step has no certificate
   form yet"). Certificate time with `--pac`: 0.3 s (32-bit), 2.2 s (64-bit), 22 s (128-bit).
 
   The `booth64` / `booth128` files in `benchmarks/multipliers/` are radix-4 Booth too, but their partial products
   are added with ripple adders (a simpler structure); GenMul itself has no Booth option.
-- **Known limit:** with yosys's default `synth` (which runs ABC logic optimisation) the adder structure is rewritten.
-  On a 16-bit multiplier Parat then times out (60 s), and so does AMulet2 on 12 bits (120 s); with `-noabc` or
-  `-booth`, or the plain `techmap` flow, Parat proves the same 16-bit multiplier. Optimised netlists are a known hard
-  case for algebraic methods.
+- **yosys's default `synth`** (which runs ABC logic optimisation and rewrites the adder structure): before Update 7
+  Parat timed out on a 16-bit multiplier (60 s), and so did AMulet2 on 12 bits (120 s). Since Update 7 (Oct 20) the
+  same 16-bit multiplier is proved. Optimised netlists are still the hardest case for algebraic methods: see
+  [Limits](#limits).
 
 **Command line:**
 - Usage: `parat file.cnf [seed] [time_limit_s] [--proof proof.drat] [--proof-binary]`.
@@ -144,6 +151,12 @@ bin/parat-linux-x86_64 mult.aag 1 300 --pac cert          # + certificate for pa
   Exit code 0 / 1.
 - `--pac prefix` writes `prefix.polys`, `prefix.proof`, `prefix.spec` (Practical Algebraic Calculus) when the answer is
   CORRECT. Check with `pacheck prefix.polys prefix.proof prefix.spec`.
+  - Update 7: for some ABC-optimised designs Parat proves a second circuit, `prefix.new.aag`, and shows with SAT that
+    it gives the same outputs as yours. Then the PAC files are for `prefix.new.aag`, and Parat also writes
+    `prefix.eq<k>.cnf` + `prefix.eq<k>.drat` (one pair per 32 outputs; each CNF is UNSAT exactly when those outputs
+    are equal). `verify/verify_multiplier.sh` checks all of it: pacheck2 for the PAC part, and for every SAT file it
+    rebuilds the CNF itself from your circuit (`verify/eq_cnf.py`, 51 lines of Python, no Parat code), compares it byte for
+    byte with Parat's, and checks the proof with drat-trim.
 - Signed or unsigned: Parat decides by simulating the circuit (and prints `c specification: signed ...` for signed);
   `--signed` / `--unsigned` force it. The certificate's target then uses the matching specification.
 
@@ -383,6 +396,45 @@ Release binary, one core (`taskset -c 0`), same machine; the files are made with
   10,000,000-variable Parat runs had the machine to themselves.
 - **Ratio 4.26** is not solved yet at these sizes (1,000,000 variables, seed 1: no answer after the first 44 minutes).
 
+### 10. Oct 20 (Update 7): multipliers optimised by ABC
+
+**The case:** yosys's default flow runs ABC, which rewrites the final adder of a multiplier (for example a sum bit
+becomes p XOR (g OR p·c) with no gate for the carry itself). Algebraic checkers rely on that structure; before this
+update Parat timed out on these designs from 40 bits up, and AMulet2 times out already on small ones.
+
+Same machine; 2 cores = the lab build of the release sources, 1 core = the release binary with `taskset -c 0`;
+time limit 1500 s. Files in `benchmarks/yosys_booth/` (`make.sh N abc`, yowasp-yosys 0.69, `synth -booth` with ABC on):
+
+| design | AND gates | Parat (Update 7), 2 cores | Parat, 1 core | AMulet2 `-verify`, 1 core, 300 s | Parat before (v1.1) |
+|---|---|---|---|---|---|
+| booth32_abc | 8,505 | proved, 0.3 s | 0.05 s | time-out | proved |
+| booth40_abc | 13,282 | proved, 24 s | 25 s | time-out | time-out |
+| booth48_abc | 18,828 | proved, 1 s | 0.2 s | time-out | proved |
+| booth56_abc | 25,436 | proved, 64 s | 37 s | time-out | time-out |
+| booth64_abc | 33,007 | proved, 45 s | 37 s | time-out | time-out |
+| booth128_abc | 128,350 | **proved, 110 s** | not run | not run | not proved (lab run, Oct 19) |
+| booth256_abcsplit (256-bit, see below) | 505,552 | **proved, 6 s** | not run | not run | not supported (above 128 bits) |
+| the 56-bit design with one gate changed (3 files), and the 256-bit one | | INCORRECT + counterexample, 8–22 s | | | |
+
+- **Certificates** (`--pac`): 56-bit 40 s, 128-bit 126 s. pacheck2: TARGET CHECKED; drat-trim: all SAT files
+  VERIFIED (4 of 4 and 8 of 8); `verify/eq_cnf.py` rebuilds every SAT file byte for byte. 128-bit certificate:
+  194 MB in total.
+- **What is proved, exactly:** the PAC certificate says "the circuit `prefix.new.aag` computes a × b"; the DRAT files
+  say "your circuit and `prefix.new.aag` give the same outputs for every input". Together: your circuit computes
+  a × b. Both parts are checked by tools we did not write (pacheck2, drat-trim); the SAT files are rebuilt from your
+  file by `verify/eq_cnf.py`, so you do not have to trust how Parat wrote them.
+- **The 256-bit design** was made in two steps (`make_split.sh 256`): Booth mapping by yowasp-yosys 0.69
+  (`synth -booth -noabc`), then `abc -fast; opt -fast` by a native yosys 0.33, because WASM ABC did not finish
+  a 256-bit design in 2 hours. Honest note: this netlist (yosys 0.33's ABC) is easier: Parat proves it directly,
+  without the new step; the same is true for its 64- and 128-bit versions. The hard ABC netlists above are the
+  yowasp-yosys 0.69 ones.
+- **New:** multipliers up to **256 × 256 bits** (512-bit output; before: 128 bits). Bug fixed on the way: for designs
+  wider than 128 bits the counterexample search compared against a wrong reference product and could answer
+  INCORRECT for a correct circuit (v1.1 is affected above 128 bits; up to 128 bits it was correct).
+- **No change elsewhere:** 71 multipliers from earlier tables: every answer the same as before, total time 286 s
+  (v1.1 lab run: 380 s).
+- Raw results: `results/abc_booth_oct20.txt`.
+
 ## Reproduce everything
 
 ```bash
@@ -450,7 +502,7 @@ Ask via an issue titled "Commercial license" (see below).
 - **Multiplier mode:**
   - It handles unsigned and signed (two's complement) multipliers given as AND-inverter graphs (`.aag`), with
     inputs a then b. Other encodings (for example sign-magnitude) are not supported.
-  - It was tested on array, Wallace and Booth designs up to 128 bits, and on the 28 unsigned and 27 signed GenMul
+  - It was tested on array, Wallace and Booth designs up to 128 bits (Booth with ABC: 32–128 bits; one 256-bit Booth design), and on the 28 unsigned and 27 signed GenMul
     architectures at 64 bits (27 and 26 proved). Wallace + carry-lookahead is not proved, signed or unsigned.
   - Certificates are written only when every step has a certificate form. Otherwise Parat prints the reason and
     writes nothing. Some certificates are large (up to 1.3 GB at 64 bits).
@@ -459,11 +511,14 @@ Ask via an issue titled "Commercial license" (see below).
     test designs (`results/rare_bugs_oct12.txt`).
 - **Very large random files (new engine):** it only finds answers; with no answer it ends as "unknown". It is made for
   random 3-SAT; other formulas never use it. Ratio 4.26 at a million variables or more is not solved yet.
-- **Multiplier netlists optimised by ABC** (yosys's default `synth`) are a hard case: a 16-bit one timed out
-  (AMulet2 also timed out on 12 bits). See "Your own multiplier" above.
+- **Multiplier netlists optimised by ABC** (yosys's default `synth`): since Update 7, yosys `synth -booth` designs
+  with ABC are proved up to 128 bits (section 10). Other ABC netlists may still time out; Wallace + carry-lookahead
+  is still not proved. For these designs Parat starts a few copies of itself (child processes) and writes temporary
+  files to the temp folder (`TMPDIR`/`TEMP`), deleted at the end.
 - **Proof files are big** (GBs at n=500). drat-trim needs about 1–2x the solve time to check them.
 - **Platform:** Linux x86-64, and Windows x86-64 (one core; tested on one Windows PC: the 100,000-variable
-  b100k_422_1 file in 21.3 s, Linux 19.4 s).
+  b100k_422_1 file in 21.3 s, Linux 19.4 s). The Update 7 path for ABC-optimised multipliers is built into the Windows
+  binary too, but was tested on Linux only.
 
 ## Acknowledgements
 

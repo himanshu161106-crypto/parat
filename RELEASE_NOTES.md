@@ -1,3 +1,41 @@
+# Update 7, Oct 20 2026: multipliers optimised by ABC, and 256-bit multipliers
+
+**Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe` (release v1.2).
+
+## New
+- **Multipliers whose adders were rewritten by ABC** (yosys's default flow) are now proved. yosys `synth -booth`
+  with ABC on: 32, 40, 48, 56, 64 and **128 bits (128,350 AND gates, 110 s)** proved; before, 40-bit and up timed
+  out. With `--pac` they come with a certificate: pacheck2 TARGET CHECKED plus DRAT files that drat-trim verifies
+  (128-bit: 126 s, 194 MB). AMulet2 (`-verify`, one core, 300 s) times out on all of them, 32 to 64 bits.
+  Table: README section 10.
+- **256 × 256-bit multipliers** (512-bit output) are supported; a 505,552-gate Booth design is proved in 6 s.
+- `verify/eq_cnf.py` (new) and `verify/verify_multiplier.sh` (extended): rebuild Parat's SAT files from your own
+  circuit and check every proof with drat-trim, next to the pacheck2 check.
+- Broken designs: a SAT counterexample that the new step finds is checked against a × b at once, so broken ABC
+  designs are answered INCORRECT in 8–22 s.
+
+## Fixed
+- Above 128-bit inputs, the counterexample search used a reference product that was too short, so a correct
+  multiplier could be reported INCORRECT (v1.1, only for designs wider than 128 bits).
+- The largest algebra attempt is now limited to 1,000,000 terms (it could use 5 GB or more on designs it then failed
+  on; every proof in the 71-design check below needs less than 500,000).
+
+## Checks on the final build
+- 71 multipliers from the earlier tables: every answer the same as before, total 286 s.
+- yosys Booth designs with ABC 32–128 bits, the 256-bit design, 4 broken designs: all answers right
+  (`results/abc_booth_oct20.txt`). Certificates 56- and 128-bit: pacheck2 TARGET CHECKED, every DRAT file VERIFIED,
+  every SAT file rebuilt byte for byte by `verify/eq_cnf.py`.
+- Release smoke test from a fresh copy (README commands, old and new multiplier paths, broken designs, the README
+  Verilog flow with and without ABC): 14 of 14 passed. No method names in the binary's strings.
+
+## Honest limits
+- The new step was tested on yosys `synth -booth` netlists. Other ABC netlists may still time out; Wallace +
+  carry-lookahead (GenMul `wt-cl`) is still not proved.
+- The 256-bit design's ABC step was done by yosys 0.33 (WASM ABC took more than 2 hours); that netlist is proved by
+  the old algebra directly, so the 256-bit result shows the wider numbers, not the new step.
+- For these designs Parat runs copies of itself as child processes and writes temporary files (deleted at the end).
+  The Windows build was compiled from the same sources but this new path was only tested on Linux.
+
 # Update 6, Oct 18 2026: certificates for yosys Booth multipliers
 
 **Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe`.

@@ -1,0 +1,126 @@
+# Update 7 (Oct 20 2026): yosys Booth multipliers with ABC. Lab build of the release sources (same code, not stripped;
+# the release binary itself was run in the smoke test below), same machine (2 cores)
+# time limit 1500 s; answer | wall time
+booth32_abc.aag | s CORRECT MULTIPLIER | 0 s
+booth40_abc.aag | s CORRECT MULTIPLIER | 24 s
+booth48_abc.aag | s CORRECT MULTIPLIER | 1 s
+booth56_abc.aag | s CORRECT MULTIPLIER | 64 s
+booth64_abc.aag | s CORRECT MULTIPLIER | 45 s
+booth128_abc.aag | s CORRECT MULTIPLIER | 110 s
+booth64_abcsplit.aag | s CORRECT MULTIPLIER | 0 s
+booth128_abcsplit.aag | s CORRECT MULTIPLIER | 2 s
+booth256_abcsplit.aag | s CORRECT MULTIPLIER | 6 s
+broken/booth56_abc_bug0.aag | s INCORRECT MULTIPLIER | 8 s
+broken/booth56_abc_bug1.aag | s INCORRECT MULTIPLIER | 9 s
+broken/booth56_abc_bug2.aag | s INCORRECT MULTIPLIER | 10 s
+broken/booth256_abcsplit_bug.aag | s INCORRECT MULTIPLIER | 22 s
+
+# 128-bit with certificate (--pac): CORRECT, wall 126 s; pacheck2 TARGET CHECKED; 8 of 8 DRAT files VERIFIED by drat-trim;
+# every SAT file rebuilt byte for byte by verify/eq_cnf.py; certificate files 194 MB in total
+# 56-bit with certificate: CORRECT, wall 40 s; TARGET CHECKED; 4 of 4 VERIFIED; rebuilt byte for byte
+
+# 71 multipliers from the earlier tables (time limit 60 s): answers unchanged vs Oct 19 lab run, total 286 s (was 380 s)
+array16.aag 1 CORRECT MULTIPLIER .038412654
+array32.aag 1 CORRECT MULTIPLIER .069729900
+array64.aag 1 CORRECT MULTIPLIER .264578417
+booth128_noabc.aag 1 CORRECT MULTIPLIER 1.693680389
+booth16.aag 1 CORRECT MULTIPLIER .366967113
+booth16_buggy.aag 1 INCORRECT MULTIPLIER .583584877
+booth32.aag 1 CORRECT MULTIPLIER 34.688037135
+booth32_noabc.aag 1 CORRECT MULTIPLIER .068911460
+booth64.aag 1 CORRECT MULTIPLIER 2.797508278
+booth64_noabc.aag 1 CORRECT MULTIPLIER .268018998
+s-sp-ar-bk-64.aag 1 CORRECT MULTIPLIER .255870267
+s-sp-ar-cl-64.aag 1 CORRECT MULTIPLIER .206730470
+s-sp-ar-ks-64.aag 1 CORRECT MULTIPLIER .280575691
+s-sp-ar-lf-64.aag 1 CORRECT MULTIPLIER .210713273
+s-sp-ar-rc-64.aag 1 CORRECT MULTIPLIER .234143366
+s-sp-ar-sp-64.aag 1 CORRECT MULTIPLIER .211645243
+s-sp-ct-bk-64.aag 1 CORRECT MULTIPLIER 4.569793414
+s-sp-ct-cl-64.aag 1 CORRECT MULTIPLIER 15.997461678
+s-sp-ct-cs-64.aag 1 CORRECT MULTIPLIER 4.857890470
+s-sp-ct-ks-64.aag 1 CORRECT MULTIPLIER 5.551754332
+s-sp-ct-lf-64.aag 1 CORRECT MULTIPLIER 5.089639943
+s-sp-ct-rc-64.aag 1 CORRECT MULTIPLIER 4.531805125
+s-sp-ct-sp-64.aag 1 CORRECT MULTIPLIER 4.463488505
+s-sp-dt-bk-64.aag 1 CORRECT MULTIPLIER .310770430
+s-sp-dt-cl-64.aag 1 CORRECT MULTIPLIER 3.907665533
+s-sp-dt-cs-64.aag 1 CORRECT MULTIPLIER .255907927
+s-sp-dt-ks-64.aag 1 CORRECT MULTIPLIER .524158688
+s-sp-dt-lf-64.aag 1 CORRECT MULTIPLIER .333699079
+s-sp-dt-rc-64.aag 1 CORRECT MULTIPLIER .215720654
+s-sp-dt-sp-64.aag 1 CORRECT MULTIPLIER .228602483
+s-sp-wt-bk-64.aag 1 CORRECT MULTIPLIER .845556970
+s-sp-wt-cl-64.aag 1 UNKNOWN (time) 60.191402912
+s-sp-wt-cs-64.aag 1 CORRECT MULTIPLIER .709625716
+s-sp-wt-ks-64.aag 1 CORRECT MULTIPLIER 1.399382586
+s-sp-wt-lf-64.aag 1 CORRECT MULTIPLIER 1.195312907
+s-sp-wt-rc-64.aag 1 CORRECT MULTIPLIER .459687962
+s-sp-wt-sp-64.aag 1 CORRECT MULTIPLIER .532508288
+u-sp-ar-bk-64.aag 1 CORRECT MULTIPLIER .238599661
+u-sp-ar-cl-64.aag 1 CORRECT MULTIPLIER .567998648
+u-sp-ar-cs-64.aag 1 CORRECT MULTIPLIER .222527834
+u-sp-ar-ks-64.aag 1 CORRECT MULTIPLIER .291101237
+u-sp-ar-lf-64.aag 1 CORRECT MULTIPLIER .256046614
+u-sp-ar-rc-64.aag 1 CORRECT MULTIPLIER .218979806
+u-sp-ar-sp-64.aag 1 CORRECT MULTIPLIER .298786882
+u-sp-ct-bk-64.aag 1 CORRECT MULTIPLIER 5.400642117
+u-sp-ct-cl-64.aag 1 CORRECT MULTIPLIER 12.907442614
+u-sp-ct-cs-64.aag 1 CORRECT MULTIPLIER 5.384315717
+u-sp-ct-ks-64.aag 1 CORRECT MULTIPLIER 6.154138692
+u-sp-ct-lf-64.aag 1 CORRECT MULTIPLIER 5.361963011
+u-sp-ct-rc-64.aag 1 CORRECT MULTIPLIER 4.447543136
+u-sp-ct-sp-64.aag 1 CORRECT MULTIPLIER 4.333625302
+u-sp-dt-bk-64.aag 1 CORRECT MULTIPLIER .331076857
+u-sp-dt-cl-64.aag 1 CORRECT MULTIPLIER 3.140957245
+u-sp-dt-cs-64.aag 1 CORRECT MULTIPLIER .265780843
+u-sp-dt-ks-64.aag 1 CORRECT MULTIPLIER .571371132
+u-sp-dt-lf-64.aag 1 CORRECT MULTIPLIER .400173180
+u-sp-dt-lf-64_buggy.aag 1 INCORRECT MULTIPLIER 1.811969834
+u-sp-dt-rc-64.aag 1 CORRECT MULTIPLIER .242545619
+u-sp-dt-sp-64.aag 1 CORRECT MULTIPLIER .230069292
+u-sp-wt-bk-64.aag 1 CORRECT MULTIPLIER .894198679
+u-sp-wt-cl-64.aag 1 UNKNOWN (time) 61.109819341
+u-sp-wt-cs-64.aag 1 CORRECT MULTIPLIER .542980157
+u-sp-wt-ks-64.aag 1 CORRECT MULTIPLIER 1.207515254
+u-sp-wt-ks-64_buggy.aag 1 INCORRECT MULTIPLIER 8.240699050
+u-sp-wt-lf-64.aag 1 CORRECT MULTIPLIER 1.101594158
+u-sp-wt-rc-64.aag 1 CORRECT MULTIPLIER .441701005
+u-sp-wt-sp-64.aag 1 CORRECT MULTIPLIER .457626650
+wallace16.aag 1 CORRECT MULTIPLIER .016729047
+wallace32.aag 1 CORRECT MULTIPLIER .174376840
+wallace32_buggy.aag 1 INCORRECT MULTIPLIER .376622437
+wallace64.aag 1 CORRECT MULTIPLIER .320030064
+
+# release smoke test
+PASS  SAT answer checked
+PASS  UNSAT + DRAT verified
+PASS  verify_multiplier booth64 (old path)
+PASS  ABC 56-bit: CORRECT
+PASS  ABC 56-bit: PAC TARGET CHECKED
+PASS  ABC 56-bit: all SAT files rebuilt + VERIFIED
+PASS  ABC 128-bit CORRECT
+PASS  256-bit CORRECT
+PASS  broken ABC 56-bit INCORRECT
+PASS  broken 256-bit INCORRECT
+PASS  buggy booth16 INCORRECT
+PASS  README 16-bit -noabc CORRECT + cert
+PASS  README 16-bit default synth (ABC) CORRECT
+PASS  signed GenMul CORRECT
+smoke: 14 passed, 0 failed
+
+# release binary: verify/verify_multiplier.sh (pacheck2 + rebuilt SAT files + drat-trim), and 1-core comparison with AMulet2
+booth32_abc verify: s CORRECT MULTIPLIER pacheck2: TARGET CHECKED  (1 s)
+booth40_abc verify: s CORRECT MULTIPLIER pacheck2: TARGET CHECKED same outputs as cert.new.aag: 3 of 3 SAT files rebuilt by this script and their proofs VERIFIED by drat-trim  (26 s)
+booth48_abc verify: s CORRECT MULTIPLIER pacheck2: TARGET CHECKED  (3 s)
+booth64_abc verify: s CORRECT MULTIPLIER pacheck2: TARGET CHECKED same outputs as cert.new.aag: 4 of 4 SAT files rebuilt by this script and their proofs VERIFIED by drat-trim  (49 s)
+booth32_abc.aag | AMulet2 1 core: time-out (300 s) | 300 s
+booth40_abc.aag | AMulet2 1 core: time-out (300 s) | 300 s
+booth48_abc.aag | AMulet2 1 core: time-out (300 s) | 300 s
+booth56_abc.aag | AMulet2 1 core: time-out (300 s) | 300 s
+booth64_abc.aag | AMulet2 1 core: time-out (300 s) | 300 s
+booth32_abc.aag | Parat 1 core: s CORRECT MULTIPLIER | .05353 s
+booth40_abc.aag | Parat 1 core: s CORRECT MULTIPLIER | 25.235 s
+booth48_abc.aag | Parat 1 core: s CORRECT MULTIPLIER | .20376 s
+booth56_abc.aag | Parat 1 core: s CORRECT MULTIPLIER | 36.715 s
+booth64_abc.aag | Parat 1 core: s CORRECT MULTIPLIER | 37.474 s
