@@ -34,7 +34,8 @@
 - The 256-bit design's ABC step was done by yosys 0.33 (WASM ABC took more than 2 hours); that netlist is proved by
   the old algebra directly, so the 256-bit result shows the wider numbers, not the new step.
 - For these designs Parat runs copies of itself as child processes and writes temporary files (deleted at the end).
-  The Windows build was compiled from the same sources but this new path was only tested on Linux.
+  The Windows build was compiled from the same sources but this new path was only tested on Linux. On Windows the
+  child processes are started directly (CreateProcess, no cmd.exe): an antivirus had flagged the first Windows build.
 
 # Update 6, Oct 18 2026: certificates for yosys Booth multipliers
 
