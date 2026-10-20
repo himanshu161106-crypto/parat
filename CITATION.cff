@@ -1,11 +1,11 @@
 cff-version: 1.2.0
 message: "If you use Parat or its benchmark results in your work, please cite it as below."
-title: "Parat: a SAT solver for hard random 3-SAT with certified unsatisfiability (DRAT proofs)"
+title: "Parat: a SAT solver with certified unsatisfiability (DRAT proofs) and a multiplier verifier with checkable certificates"
 authors:
   - given-names: "Himanshu"
-version: "1.0"
-date-released: "2026-10-10"
+version: "1.2"
+date-released: "2026-10-20"
 url: "https://github.com/himanshu161106-crypto/parat"
 repository-code: "https://github.com/himanshu161106-crypto/parat"
-keywords: ["SAT solver", "random 3-SAT", "DRAT", "proof checking", "benchmarks"]
+keywords: ["SAT solver", "random 3-SAT", "DRAT", "proof checking", "multiplier verification", "computer algebra", "PAC certificates", "benchmarks"]
 license-url: "https://github.com/himanshu161106-crypto/parat/blob/main/LICENSE"

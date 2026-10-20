@@ -505,12 +505,13 @@ Ask via an issue titled "Commercial license" (see below).
 
 ## Licensing
 
-- **Free:** personal use, academic research and teaching, publishing benchmark results, and evaluation.
+- **Free:** personal use, academic research and teaching, publishing benchmark results, and evaluation (60 days).
+- **Your results are yours:** answers, proofs and certificates that Parat writes for your files belong to you.
 - **Paid commercial license:** use in a product or service, or in a company's production work, for example EDA,
   hardware or software verification, scheduling, planning or configuration tools.
 - **To ask** for a license, a custom build (other platforms, an embeddable library, special formula families) or
   support, open a GitHub issue titled **"Commercial license"**.
-- Full terms: [LICENSE](LICENSE).
+- Full terms: [LICENSE](LICENSE) (Parat Software License 2.0; it applies to every release, v1.0 to v1.2).
 - The scripts in `verify/` and the files in `benchmarks/` are free for any use.
 
 ## Limits

@@ -1,26 +1,66 @@
-Parat Evaluation License
+Parat Software License
+Version 2.0, 20 October 2026
+Applies to Parat v1.2 and to every earlier and later release in this repository, unless a release says otherwise.
+
 Copyright (c) 2026 Himanshu. All rights reserved.
 
-The Parat binary in this repository ("the Software") is licensed, not sold.
+1. Definitions
+   "Software"  means the Parat programs in bin/ (parat-linux-x86_64, parat-windows-x86_64.exe), in every version
+               published in this repository or on its release pages.
+   "Owner"     means Himanshu, the copyright holder.
+   "You"       means the person or organisation using the Software.
+   "Output"    means what the Software prints or writes when you run it: answers, counterexamples, DRAT proofs,
+               PAC certificates, circuits written with --pac, and log lines.
+   "Open files" means the scripts in verify/, the files in benchmarks/ and results/, README.md, RELEASE_NOTES.md and
+               CITATION.cff.
 
-1. Free use. You may download and run the Software, free of charge, for:
-   (a) personal use,
-   (b) academic research and teaching, including publishing benchmark results obtained with it, and
-   (c) evaluating whether you want a commercial license.
+2. Free licence
+   The Software is licensed, not sold. The Owner grants You a free, non-exclusive, non-transferable, worldwide
+   licence to download, install and run the Software for:
+   (a) personal, non-commercial use;
+   (b) academic research and teaching at a university, school or non-profit research institute, including
+       publishing papers, theses and benchmark results obtained with it;
+   (c) evaluating, for up to 60 days, whether You want a commercial licence.
 
-2. Commercial use needs a paid license. Any other use needs a separate written commercial license from the
-   copyright holder. This includes use inside a product or service, use in a company's internal production work, and
-   offering the Software as part of a paid service.
-   To ask for one, open a GitHub issue in this repository titled "Commercial license".
+3. Commercial use
+   Every use not listed in section 2 needs a separate written commercial licence from the Owner. This includes, for
+   example: using the Software inside a product or a service; using it in a company's design, verification or
+   production work; offering it, or its Output, as part of a paid service; and bundling it with commercial software
+   or hardware. To ask for a licence, open a GitHub issue in this repository titled "Commercial license".
 
-3. Restrictions. You may not:
-   (a) decompile, disassemble or reverse engineer the Software, except where the law allows it despite this term;
-   (b) redistribute modified versions of the Software;
-   (c) remove this license or the copyright notice.
-   You may redistribute the unmodified Software together with this license, free of charge.
+4. Restrictions
+   You may not, and may not help anyone else to:
+   (a) decompile, disassemble or reverse engineer the Software, or try to recover its source code or its methods,
+       except to the extent that the applicable law allows this despite this term;
+   (b) modify the Software, or distribute modified versions of it;
+   (c) sell, rent or sublicense the Software;
+   (d) remove or change this licence, the copyright notice or the version information in the Software;
+   (e) use the Software or its Output to build or train a product that copies its function for commercial use.
+   You may share the unmodified Software free of charge, as long as this licence goes with it.
 
-4. No warranty. The Software is provided "as is", without warranty of any kind. The copyright holder is not liable
-   for any claim, damages or other liability arising from its use.
+5. Your Output
+   Output that the Software produces from Your own input files belongs to You. You may publish it, including
+   certificates and proofs, and You may check it with any tool.
 
-The scripts in verify/ and the benchmark files in benchmarks/ may be used, copied and changed by anyone for any
-purpose.
+6. Open files
+   The Open files may be used, copied, changed and shared by anyone, for any purpose, without asking. They come with
+   no warranty (section 8).
+
+7. Ending this licence
+   This licence ends automatically if You break any of its terms. You must then stop using the Software and delete
+   all copies. Sections 4, 8, 9 and 10 stay in force after that.
+
+8. No warranty
+   The Software is provided "as is", without warranty of any kind, express or implied, including fitness for a
+   particular purpose. Answers and certificates should be checked with the independent tools named in README.md
+   before they are relied on.
+
+9. Limitation of liability
+   To the extent the law allows, the Owner is not liable for any damages, losses or claims arising from the use of
+   the Software or its Output.
+
+10. Law
+   This licence is governed by the laws of India. Courts in India have jurisdiction over disputes about it.
+
+Third-party tools used to check Parat's results (drat-trim, pacheck2, AMulet2, Kissat and others) are not part of
+the Software and have their own licences.
