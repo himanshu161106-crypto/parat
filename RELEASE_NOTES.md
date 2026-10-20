@@ -28,6 +28,11 @@
 - Release smoke test from a fresh copy (README commands, old and new multiplier paths, broken designs, the README
   Verilog flow with and without ABC): 14 of 14 passed. No method names in the binary's strings.
 
+## Binaries rebuilt the same evening (Oct 20, 22:00)
+- Harder to reverse engineer: link-time optimisation, no debug words left in the binary, no compiler fingerprint,
+  the temporary work files of the new step are encoded and carry neutral names. Same answers: smoke test 14 of 14,
+  71-design check unchanged. SHA256SUMS lists the current files.
+
 ## Honest limits
 - The new step was tested on yosys `synth -booth` netlists. Other ABC netlists may still time out; Wallace +
   carry-lookahead (GenMul `wt-cl`) is still not proved.
