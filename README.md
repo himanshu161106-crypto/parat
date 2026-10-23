@@ -112,10 +112,20 @@ python3 verify/check_model.py benchmarks/hard_n1000/h1000_02.cnf out.txt     # -
 git clone https://github.com/marijnheule/drat-trim && make -C drat-trim
 bash verify/verify_unsat.sh benchmarks/wall426/w400_2.cnf drat-trim/drat-trim   # -> s VERIFIED
 
-# 3. check a multiplier proof yourself (needs pacheck2 once)
+# 3. check a multiplier proof yourself (needs pacheck2 and drat-trim once)
 git clone https://github.com/d-kfmnn/pacheck2 && (cd pacheck2 && ./configure.sh && make)   # needs g++ and libgmp-dev
-bash verify/verify_multiplier.sh benchmarks/multipliers/booth64.aag pacheck2/pacheck   # -> TARGET CHECKED
+bash verify/verify_multiplier.sh benchmarks/multipliers/booth64.aag pacheck2/pacheck drat-trim/drat-trim
+#    -> CERTIFIED, exit status 0 only if every check passed (otherwise NOT CERTIFIED + the reason, exit 1)
+#    a certificate someone else made:  ... drat-trim/drat-trim --cert path/to/prefix
+# 4. test the checker itself: swapped, corrupted or missing certificate parts must all be rejected
+bash verify/test_checker.sh pacheck2/pacheck drat-trim/drat-trim                   # -> 17 as expected, 0 wrong
 ```
+
+What `verify_multiplier.sh` checks: (1) `verify/pac_circuit.py` reads your circuit and checks that every polynomial in
+the certificate is the definition of one of its gates or outputs (or the modulus 2^O) and that the target is
+"outputs = a × b mod 2^O" — pacheck2 alone cannot know which circuit a certificate belongs to; (2) pacheck2
+checks the proof; (3) for ABC-optimised designs, every SAT file is rebuilt from your circuit by `verify/eq_cnf.py`
+and its proof checked by drat-trim; every output range must be present.
 
 ### Your own multiplier: from Verilog to AIGER
 

@@ -1,3 +1,21 @@
+# Checker fixes, Oct 23 2026 (thanks to a reviewer)
+
+No change to the binaries. The verification scripts are stricter:
+- `verify/verify_multiplier.sh` now exits with status 0 only if every check passes, and 1 with the reason
+  otherwise. Before, a SAT file that differed from the rebuilt one only printed a warning, and the script ended
+  with status 0 even when not every equivalence proof had been checked; a missing output range was not noticed.
+  Now every range 0 .. ceil(O/32)-1 must be present, rebuilt byte for byte, and VERIFIED by drat-trim.
+- New `verify/pac_circuit.py`: checks that every polynomial of the PAC certificate is a gate or output definition of
+  the circuit (or the modulus 2^O) and that the target is a × b mod 2^O. pacheck2 checks the proof but cannot know
+  which circuit a certificate is for: given booth40_abc's certificate, it answers TARGET CHECKED whatever circuit
+  you meant. With this check a certificate only counts for the circuit it was made for.
+- `verify_multiplier.sh ... --cert prefix` checks an existing certificate without running Parat.
+- New `verify/test_checker.sh`: 17 negative and positive cases for the checker pipeline itself (swapped
+  certificates both ways, a DRAT proof corrupted, truncated or missing, a SAT file missing or changed, a gate of
+  the second circuit changed, a fake fact added, a gate polynomial changed, the modulus or the target changed,
+  the PAC proof truncated, a broken multiplier). All 17 behave as expected (`results/checker_tests_oct23.txt`).
+- The drat-trim path is now a required argument of `verify_multiplier.sh`.
+
 # Update 7, Oct 20 2026: multipliers optimised by ABC, and 256-bit multipliers
 
 **Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe` (release v1.2).
