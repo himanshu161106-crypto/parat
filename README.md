@@ -10,7 +10,7 @@ Parat reads a formula in DIMACS CNF and answers one of three things:
 It is built for the hardest region of random 3-SAT, near the threshold (clause/variable ratio 4.2–4.26). It also
 solves structured and industrial files correctly.
 
-### What Parat can do (v1.2, Update 7)
+### What Parat can do (v1.3)
 
 | task | how to run | what you get | how you check it without trusting Parat |
 |---|---|---|---|
@@ -24,7 +24,8 @@ solves structured and industrial files correctly.
 - Hard random 3-SAT near the threshold: proving "no answer" level with march_nh, far ahead of CDCL solvers.
 - Very large random 3-SAT with an answer: 1,000,000 variables at ratio 4.22 in 236 s (the original SP solver: 1742 s).
 - Multipliers: array, Wallace, Booth and the GenMul family (27 of 28 at 64 bits); 128-bit designs in seconds with
-  certificates; since Update 7 also yosys Booth multipliers optimised by ABC (32–128 bits; AMulet2 times out on them).
+  certificates; since Update 7 also yosys Booth multipliers optimised by ABC (32–128 bits; AMulet2 times out on them);
+  since v1.3 the yosys 0.69 netlists made without ABC's `&fraig` step up to **256 bits, with certificates**.
 
 **Weaker / not done yet:**
 - Factoring circuits and sudoku files: Kissat is about 1.6–1.8x faster. Large industrial competition files were not
@@ -90,7 +91,7 @@ s VERIFIED                                        # 62 s, independent checker
   - Details: [section 10](#10-oct-20-update-7-multipliers-optimised-by-abc).
 - **New (Oct 23, v1.3): the hard yosys 0.69 netlists, up to 256 bits.** yosys's default ABC script, without its
   one `&fraig -x` step (that step alone needs about 24 hours at 256 bits; without it the netlist builds in 2 minutes):
-  64-bit proved in 41 s, 128-bit in 107 s, **256-bit (503,960 AND gates) in 13 minutes, each with a PAC + DRAT
+  64-bit proved in 42 s, 128-bit in 114 s, **256-bit (503,960 AND gates) in 13 minutes, each with a PAC + DRAT
   certificate** that pacheck2 and drat-trim accept (the 256-bit check takes 3 minutes and 0.8 GB). The release
   before (v1.2) did not prove even the 64-bit one in 1500 s. Details: [section 11](#11-oct-23-v13-yosys-069-netlists-up-to-256-bits).
 - **Nothing to trust blindly.** The repo has everything needed to redo each table on your own machine:
@@ -101,9 +102,17 @@ s VERIFIED                                        # 62 s, independent checker
 
 ## Quick start
 
-Linux x86-64: `bin/parat-linux-x86_64` is static and needs nothing else. **Windows (new, Oct 12):**
-`bin/parat-windows-x86_64.exe`, run it from a terminal (for example Git Bash): `./parat-windows-x86_64.exe file.cnf`.
-The Windows build uses one core. There is no macOS build yet.
+| system | file | notes |
+|---|---|---|
+| Linux x86-64 | `bin/parat-linux-x86_64` | static, needs nothing else; uses all cores |
+| Windows x86-64 | `bin/parat-windows-x86_64.exe` | run it from a terminal (for example Git Bash); one core |
+| macOS, Apple silicon (M1/M2/M3/M4) | `bin/parat-macos-arm64` | **new in v1.3**, see below |
+| macOS, Intel | `bin/parat-macos-x86_64` | **new in v1.3**, see below |
+
+**macOS (new, v1.3):** the macOS files are built on Linux (cross-compiled) and were **not run on a Mac by us yet**;
+please report how they behave. They are not notarized by Apple, so after downloading, once:
+`chmod +x parat-macos-arm64 && xattr -d com.apple.quarantine parat-macos-arm64` (same for the Intel file). Then
+`./parat-macos-arm64 file.cnf`. Checksums of all four files: `SHA256SUMS`.
 
 ```bash
 git clone https://github.com/himanshu161106-crypto/parat && cd parat
@@ -482,11 +491,13 @@ files rebuilt from your circuit). Files in `benchmarks/yosys_booth/` (`make_nofr
 
 | design | AND gates | Parat v1.3 with certificate | certificate | independent check | Parat v1.2 |
 |---|---|---|---|---|---|
-| booth64_nofraig | 33,014 | **proved, 41 s** | 152 MB | CERTIFIED, 18 s | not proved in 1500 s |
-| booth128_nofraig | 128,357 | **proved, 107 s** | 209 MB | CERTIFIED, 21 s | not run |
-| booth256_nofraig (256 × 256, 512-bit output) | 503,960 | **proved, 777 s** | 1.2 GB | CERTIFIED, 181 s (0.8 GB memory) | not run |
-| booth64_nofraig with one gate changed (`broken/`) | | INCORRECT, 67 s | | | |
+| booth64_nofraig | 33,014 | **proved, 42 s** | 152 MB | CERTIFIED, 19 s | not proved in 1500 s |
+| booth128_nofraig | 128,357 | **proved, 114 s** | 209 MB | CERTIFIED, 23 s | not run |
+| booth256_nofraig (256 × 256, 512-bit output) | 503,960 | **proved, 800 s** | 1.2 GB | CERTIFIED, 170 s (0.8 GB memory) | not run |
+| booth64_nofraig with one gate changed (`broken/`) | | INCORRECT, 54 s | | | |
 
+- **The certificates are in the repo** (`benchmarks/yosys_booth/certificates/`: 64- and 128-bit; the 256-bit one,
+  197 MB packed, is on the v1.3 release page). Instructions to check them there.
 - **CERTIFIED** means: pacheck2 says TARGET CHECKED for `prefix.new.aag` computing a × b, `pac_circuit.py` confirms
   every polynomial is a gate of that circuit and the target is a × b mod 2^512, and drat-trim VERIFIES all 16 SAT
   files ("your circuit and `prefix.new.aag` differ" is UNSAT), each rebuilt byte for byte from your file.
@@ -578,8 +589,9 @@ Ask via an issue titled "Commercial license" (see below).
   is still not proved. For these designs Parat starts a few copies of itself (child processes) and writes temporary
   files to the temp folder (`TMPDIR`/`TEMP`), deleted at the end.
 - **Proof files are big** (GBs at n=500). drat-trim needs about 1–2x the solve time to check them.
-- **Platform:** Linux x86-64, and Windows x86-64 (one core; tested on one Windows PC: the 100,000-variable
-  b100k_422_1 file in 21.3 s, Linux 19.4 s). The Update 7 path for ABC-optimised multipliers is built into the Windows
+- **Platform:** Linux x86-64, Windows x86-64 (one core; tested on one Windows PC: the 100,000-variable
+  b100k_422_1 file in 21.3 s, Linux 19.4 s), and macOS (arm64 and x86-64, new in v1.3: built by cross-compiling,
+  not yet run on a Mac by us). The Update 7 path for ABC-optimised multipliers is built into the Windows
   binary too, but was tested on Linux only.
 
 ## Acknowledgements

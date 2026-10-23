@@ -2,11 +2,14 @@
 smoke: 14 passed, 0 failed
 == checker
 checker tests: 17 as expected, 0 wrong
-nofr64: s CORRECT MULTIPLIER (41 s, certificate 152M); check 18 s: CERTIFIED: the circuit computes a*b (every check passed)
-nofr128: s CORRECT MULTIPLIER (107 s, certificate 209M); check 21 s: CERTIFIED: the circuit computes a*b (every check passed)
-nofr256: s CORRECT MULTIPLIER (777 s, certificate 1.2G); check 181 s: CERTIFIED: the circuit computes a*b (every check passed)
-bug64a: s INCORRECT MULTIPLIER 67 s
+booth64_nofraig: s CORRECT MULTIPLIER (42 s, certificate 152M); check 19 s: CERTIFIED: the circuit computes a*b (every check passed)
+  archive 24M
+booth128_nofraig: s CORRECT MULTIPLIER (114 s, certificate 209M); check 23 s: CERTIFIED: the circuit computes a*b (every check passed)
+  archive 51M
+booth256_nofraig: s CORRECT MULTIPLIER (800 s, certificate 1.2G); check 170 s: CERTIFIED: the circuit computes a*b (every check passed)
+  archive 197M
+bug64a: s INCORRECT MULTIPLIER 54 s
 == regression
 DIFF u-sp-wt-cl-64.aag  UNKNOWN (time) |  CORRECT MULTIPLIER
-regression total s 581.542
+regression total s 574.781
 DONE

@@ -1,13 +1,17 @@
-# v1.3, Oct 23 2026: hard yosys 0.69 netlists up to 256 bits
+# v1.3, Oct 23 2026: hard yosys 0.69 netlists up to 256 bits, with certificates; macOS builds
 
-**Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe` (checksums in `SHA256SUMS`).
+**Download:** `bin/parat-linux-x86_64`, `bin/parat-windows-x86_64.exe`, and new `bin/parat-macos-arm64` (Apple
+silicon) and `bin/parat-macos-x86_64` (Intel Mac). Checksums in `SHA256SUMS`. The macOS files are cross-compiled and
+not yet run on a Mac by us; after download: `chmod +x` and `xattr -d com.apple.quarantine` (README, Quick start).
 
 ## New
 - Booth multipliers made by yosys 0.69 with its default ABC script minus the `&fraig -x` step (that step alone
-  needs about a day at 256 bits) are now proved **with a PAC + DRAT certificate**: 64-bit 41 s, 128-bit 107 s,
-  **256-bit (503,960 AND gates) 777 s, certificate 1.2 GB, checked by `verify_multiplier.sh` in 3 minutes**
+  needs about a day at 256 bits) are now proved **with a PAC + DRAT certificate**: 64-bit 42 s, 128-bit 114 s,
+  **256-bit (503,960 AND gates) 800 s, certificate 1.2 GB, checked by `verify_multiplier.sh` in 3 minutes**
   (pacheck2 TARGET CHECKED, drat-trim 16/16 VERIFIED). v1.2 did not prove the 64-bit one in 1500 s. A broken
-  64-bit one is answered INCORRECT (67 s). Files: `benchmarks/yosys_booth/booth{64,128,256}_nofraig.aag.gz`,
+  64-bit one is answered INCORRECT (54 s).
+- The certificates themselves: `benchmarks/yosys_booth/certificates/` (64, 128 bits) and the release page (256 bits,
+  `booth256_nofraig_certificate.tar.xz`, 197 MB). Files: `benchmarks/yosys_booth/booth{64,128,256}_nofraig.aag.gz`,
   `make_nofraig.sh`. Table: README section 11.
 
 ## Unchanged
