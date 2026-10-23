@@ -1,3 +1,18 @@
+# v1.3, Oct 23 2026: hard yosys 0.69 netlists up to 256 bits
+
+**Download:** `bin/parat-linux-x86_64` and `bin/parat-windows-x86_64.exe` (checksums in `SHA256SUMS`).
+
+## New
+- Booth multipliers made by yosys 0.69 with its default ABC script minus the `&fraig -x` step (that step alone
+  needs about a day at 256 bits) are now proved: 64-bit 106 s, 128-bit 77 s, **256-bit (503,960 AND gates)
+  635 s**. v1.2 did not prove the 64-bit one in 1500 s. A broken 64-bit one is answered INCORRECT (70 s).
+  Files: `benchmarks/yosys_booth/booth{64,128,256}_nofraig.aag.gz`, `make_nofraig.sh`. Table: README section 11.
+- For these netlists no PAC certificate is written yet (Parat says so); the answer is still a proof.
+
+## Unchanged
+- 71 earlier multipliers: same answers (one former time-out now proved). Smoke test 14/14, checker tests 17/17.
+- Designs that got a certificate in v1.2 still get it.
+
 # Checker fixes, Oct 23 2026 (thanks to a reviewer)
 
 No change to the binaries. The verification scripts are stricter:

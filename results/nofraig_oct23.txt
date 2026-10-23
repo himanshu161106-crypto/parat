@@ -1,0 +1,17 @@
+== smoke
+PASS  signed GenMul CORRECT
+smoke: 14 passed, 0 failed
+== checker
+ok    broken multiplier (booth16_buggy), full run  (NOT CERTIFIED: Parat did not prove the circuit correct)
+checker tests: 17 as expected, 0 wrong
+== nofr64 --pac
+c PAC certificate not written: one step of this proof has no certificate form yet
+s CORRECT MULTIPLIER
+nofr64.aag s CORRECT MULTIPLIER 106 s
+nofr128.aag s CORRECT MULTIPLIER 77 s
+nofr256.aag s CORRECT MULTIPLIER 635 s
+bug64a.aag s INCORRECT MULTIPLIER 70 s
+== regression
+DIFF u-sp-wt-cl-64.aag  UNKNOWN (time) |  CORRECT MULTIPLIER
+regression total s 566.456
+DONE

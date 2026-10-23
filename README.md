@@ -88,6 +88,10 @@ s VERIFIED                                        # 62 s, independent checker
   - **256-bit multipliers** are now supported (512-bit output): a 505,552-gate Booth design is proved in 6 s.
   - Broken versions (one gate changed) are answered INCORRECT with a counterexample in 8–22 s.
   - Details: [section 10](#10-oct-20-update-7-multipliers-optimised-by-abc).
+- **New (Oct 23, v1.3): the hard yosys 0.69 netlists, up to 256 bits.** yosys's default ABC script, without its
+  one `&fraig -x` step (that step alone needs about 24 hours at 256 bits; without it the netlist builds in 2 minutes):
+  64-bit proved in 106 s, 128-bit in 77 s, **256-bit (503,960 AND gates) in 11 minutes**. The release before (v1.2)
+  did not prove even the 64-bit one in 1500 s. Details: [section 11](#11-oct-23-v13-yosys-069-netlists-up-to-256-bits).
 - **Nothing to trust blindly.** The repo has everything needed to redo each table on your own machine:
   - an answer checker,
   - a seeded file generator,
@@ -461,6 +465,33 @@ time limit 1500 s. Files in `benchmarks/yosys_booth/` (`make.sh N abc`, yowasp-y
 - **No change elsewhere:** 71 multipliers from earlier tables: every answer the same as before, total time 286 s
   (v1.1 lab run: 380 s).
 - Raw results: `results/abc_booth_oct20.txt`.
+
+### 11. Oct 23 (v1.3): yosys 0.69 netlists up to 256 bits
+
+**The case:** the default yosys 0.69 flow (`synth -booth`, ABC on) does not finish a 256-bit multiplier: ABC's
+`&fraig -x` step grows about 82× per doubling of the width (64-bit 6.9 s; the whole 128-bit build 18 min; 256-bit about
+24 hours by that rate). Native yosys 0.69 (git 9f75ca1f9) gives the same gates as yowasp-yosys 0.69, only faster.
+Without that one step, the rest of the default ABC script (`scorr; dc2; dretime; &dch -f; &nf`) runs in 2 minutes
+at 256 bits, and the netlist is only a few gates larger (64-bit: 33,014 vs 33,007 gates). It is harder for
+Parat, though: v1.2 did not prove the 64-bit one in 1500 s.
+
+Release binary, 1 machine with 2 cores, time limit 6000 s. Files in `benchmarks/yosys_booth/`
+(`make_nofraig.sh N`):
+
+| design | AND gates | Parat v1.3 | Parat v1.2 |
+|---|---|---|---|
+| booth64_nofraig | 33,014 | **proved, 106 s** | not proved in 1500 s |
+| booth128_nofraig | 128,357 | **proved, 77 s** | not run |
+| booth256_nofraig (256 × 256, 512-bit output) | 503,960 | **proved, 635 s** | not run |
+| booth64_nofraig with one gate changed (`broken/`) | | INCORRECT, 70 s | |
+
+- **Certificates:** for these netlists Parat answers CORRECT but says that it cannot write a PAC certificate yet
+  ("one step of this proof has no certificate form yet"). The designs of section 10 still get their certificates.
+- **No change elsewhere:** the 71 multipliers of the earlier tables give the same answers as v1.2 (one design,
+  `u-sp-wt-cl-64`, is now proved; it was a time-out). Smoke test 14/14, checker tests 17/17.
+- **Still open:** the full default netlist (with `&fraig -x`) at 256 bits, because yosys itself needs about a day
+  to make it. Parat proves the default netlists at 32–128 bits (section 10).
+- Raw results: `results/nofraig_oct23.txt`, `results/regression71_oct23_final.txt`.
 
 ## Reproduce everything
 
