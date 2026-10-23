@@ -90,8 +90,9 @@ s VERIFIED                                        # 62 s, independent checker
   - Details: [section 10](#10-oct-20-update-7-multipliers-optimised-by-abc).
 - **New (Oct 23, v1.3): the hard yosys 0.69 netlists, up to 256 bits.** yosys's default ABC script, without its
   one `&fraig -x` step (that step alone needs about 24 hours at 256 bits; without it the netlist builds in 2 minutes):
-  64-bit proved in 106 s, 128-bit in 77 s, **256-bit (503,960 AND gates) in 11 minutes**. The release before (v1.2)
-  did not prove even the 64-bit one in 1500 s. Details: [section 11](#11-oct-23-v13-yosys-069-netlists-up-to-256-bits).
+  64-bit proved in 41 s, 128-bit in 107 s, **256-bit (503,960 AND gates) in 13 minutes, each with a PAC + DRAT
+  certificate** that pacheck2 and drat-trim accept (the 256-bit check takes 3 minutes and 0.8 GB). The release
+  before (v1.2) did not prove even the 64-bit one in 1500 s. Details: [section 11](#11-oct-23-v13-yosys-069-netlists-up-to-256-bits).
 - **Nothing to trust blindly.** The repo has everything needed to redo each table on your own machine:
   - an answer checker,
   - a seeded file generator,
@@ -475,23 +476,25 @@ Without that one step, the rest of the default ABC script (`scorr; dc2; dretime;
 at 256 bits, and the netlist is only a few gates larger (64-bit: 33,014 vs 33,007 gates). It is harder for
 Parat, though: v1.2 did not prove the 64-bit one in 1500 s.
 
-Release binary, 1 machine with 2 cores, time limit 6000 s. Files in `benchmarks/yosys_booth/`
-(`make_nofraig.sh N`):
+Release binary, 1 machine with 2 cores, `--pac` on (proof + certificate), time limit 7000 s. The check is
+`verify/verify_multiplier.sh circuit pacheck drat-trim --cert prefix` (pac_circuit.py, pacheck2, and drat-trim on SAT
+files rebuilt from your circuit). Files in `benchmarks/yosys_booth/` (`make_nofraig.sh N`):
 
-| design | AND gates | Parat v1.3 | Parat v1.2 |
-|---|---|---|---|
-| booth64_nofraig | 33,014 | **proved, 106 s** | not proved in 1500 s |
-| booth128_nofraig | 128,357 | **proved, 77 s** | not run |
-| booth256_nofraig (256 × 256, 512-bit output) | 503,960 | **proved, 635 s** | not run |
-| booth64_nofraig with one gate changed (`broken/`) | | INCORRECT, 70 s | |
+| design | AND gates | Parat v1.3 with certificate | certificate | independent check | Parat v1.2 |
+|---|---|---|---|---|---|
+| booth64_nofraig | 33,014 | **proved, 41 s** | 152 MB | CERTIFIED, 18 s | not proved in 1500 s |
+| booth128_nofraig | 128,357 | **proved, 107 s** | 209 MB | CERTIFIED, 21 s | not run |
+| booth256_nofraig (256 × 256, 512-bit output) | 503,960 | **proved, 777 s** | 1.2 GB | CERTIFIED, 181 s (0.8 GB memory) | not run |
+| booth64_nofraig with one gate changed (`broken/`) | | INCORRECT, 67 s | | | |
 
-- **Certificates:** for these netlists Parat answers CORRECT but says that it cannot write a PAC certificate yet
-  ("one step of this proof has no certificate form yet"). The designs of section 10 still get their certificates.
+- **CERTIFIED** means: pacheck2 says TARGET CHECKED for `prefix.new.aag` computing a × b, `pac_circuit.py` confirms
+  every polynomial is a gate of that circuit and the target is a × b mod 2^512, and drat-trim VERIFIES all 16 SAT
+  files ("your circuit and `prefix.new.aag` differ" is UNSAT), each rebuilt byte for byte from your file.
 - **No change elsewhere:** the 71 multipliers of the earlier tables give the same answers as v1.2 (one design,
   `u-sp-wt-cl-64`, is now proved; it was a time-out). Smoke test 14/14, checker tests 17/17.
 - **Still open:** the full default netlist (with `&fraig -x`) at 256 bits, because yosys itself needs about a day
   to make it. Parat proves the default netlists at 32–128 bits (section 10).
-- Raw results: `results/nofraig_oct23.txt`, `results/regression71_oct23_final.txt`.
+- Raw results: `results/nofraig_certificates_oct23.txt`, `results/regression71_oct23_final.txt`.
 
 ## Reproduce everything
 

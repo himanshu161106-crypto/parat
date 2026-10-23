@@ -1,0 +1,12 @@
+== smoke
+smoke: 14 passed, 0 failed
+== checker
+checker tests: 17 as expected, 0 wrong
+nofr64: s CORRECT MULTIPLIER (41 s, certificate 152M); check 18 s: CERTIFIED: the circuit computes a*b (every check passed)
+nofr128: s CORRECT MULTIPLIER (107 s, certificate 209M); check 21 s: CERTIFIED: the circuit computes a*b (every check passed)
+nofr256: s CORRECT MULTIPLIER (777 s, certificate 1.2G); check 181 s: CERTIFIED: the circuit computes a*b (every check passed)
+bug64a: s INCORRECT MULTIPLIER 67 s
+== regression
+DIFF u-sp-wt-cl-64.aag  UNKNOWN (time) |  CORRECT MULTIPLIER
+regression total s 581.542
+DONE

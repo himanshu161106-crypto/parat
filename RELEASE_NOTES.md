@@ -4,10 +4,11 @@
 
 ## New
 - Booth multipliers made by yosys 0.69 with its default ABC script minus the `&fraig -x` step (that step alone
-  needs about a day at 256 bits) are now proved: 64-bit 106 s, 128-bit 77 s, **256-bit (503,960 AND gates)
-  635 s**. v1.2 did not prove the 64-bit one in 1500 s. A broken 64-bit one is answered INCORRECT (70 s).
-  Files: `benchmarks/yosys_booth/booth{64,128,256}_nofraig.aag.gz`, `make_nofraig.sh`. Table: README section 11.
-- For these netlists no PAC certificate is written yet (Parat says so); the answer is still a proof.
+  needs about a day at 256 bits) are now proved **with a PAC + DRAT certificate**: 64-bit 41 s, 128-bit 107 s,
+  **256-bit (503,960 AND gates) 777 s, certificate 1.2 GB, checked by `verify_multiplier.sh` in 3 minutes**
+  (pacheck2 TARGET CHECKED, drat-trim 16/16 VERIFIED). v1.2 did not prove the 64-bit one in 1500 s. A broken
+  64-bit one is answered INCORRECT (67 s). Files: `benchmarks/yosys_booth/booth{64,128,256}_nofraig.aag.gz`,
+  `make_nofraig.sh`. Table: README section 11.
 
 ## Unchanged
 - 71 earlier multipliers: same answers (one former time-out now proved). Smoke test 14/14, checker tests 17/17.
