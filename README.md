@@ -38,6 +38,22 @@ This build is **Linux x86-64 only**: `parat-linux-x86_64`, static, needs nothing
 - Windows and macOS binaries are not part of this release.
 
 ---
+512-Bit Multiplier — Proof-Checked via PAC Certificate
+Parat has successfully proven a 512-bit Wallace-tree multiplier (consisting of 2,631,069 AND gates) correct while generating a PAC (Proof-Altering Certificate) alongside the result. This provides more than just a binary answer—it delivers a fully checkable algebraic proof trail.
+
+The generated certificate files (.polys, .proof, and .spec) were independently verified using pacheck2, a completely separate verification tool featuring its own independent math engine that shares no code with Parat.
+
+Execution and Verification Breakdown
+Step	Time	Result & Artifact Details
+Parat (Solve + Write Certificate)	~5–5.5 min	
+s CORRECT MULTIPLIER
+
+
+(File sizes: 2.18 GB proof, 122 MB polys, 43 MB spec)
+
+pacheck2 (Independent Verification)	~2.5 min	TARGET CHECKED
+Total Pipeline Time	~7.5–8 min	Result independently confirmed (zero reliance on self-reporting)
+Key Takeaway: Without certificate generation, the exact same 512-bit multiplier is verified correct in just 27 seconds. The additional time required for the certificate funds a complete, rigorous algebraic proof trail for a 2.6-million-gate circuit—enabling anyone to mathematically verify the correctness without having to trust Parat blindly.
 
 ## Quick start (Linux x86-64)
 
@@ -115,6 +131,7 @@ Reports the file's type (DIMACS CNF, ASCII AIGER, or unsupported) without solvin
 - Your results are yours: answers, proofs and certificates that Parat writes for your files belong to you.
 - Paid commercial license: use in a product or service, or in a company's production work (for example EDA, hardware or software verification, scheduling, planning or configuration tools).
 - Full terms: see `LICENSE` (Parat Software License).
+- 
 
 ## Limits
 
