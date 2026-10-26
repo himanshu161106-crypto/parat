@@ -54,7 +54,59 @@ s CORRECT MULTIPLIER
 pacheck2 (Independent Verification)	~2.5 min	TARGET CHECKED
 Total Pipeline Time	~7.5–8 min	Result independently confirmed (zero reliance on self-reporting)
 Key Takeaway: Without certificate generation, the exact same 512-bit multiplier is verified correct in just 27 seconds. The additional time required for the certificate funds a complete, rigorous algebraic proof trail for a 2.6-million-gate circuit—enabling anyone to mathematically verify the correctness without having to trust Parat blindly.
+# PARAT — Benchmarks & Capabilities
 
+## Overview
+
+Parat is a SAT-solving and logic-circuit verification tool. Its tested capabilities include Boolean satisfiability solving, selected constraint problems, factoring-related CNF instances, and digital multiplier-circuit verification.
+
+## SAT Benchmark Results
+
+| Benchmark | Instances | Result |
+|---|---:|---|
+| UF50-218 | 1,000 | 1,000 valid SAT models |
+| UF250-1065 | 100 | 100 valid SAT models |
+| BMS_k3_n100_m429 | 500 | 500 valid SAT models |
+| SW100-8-p0-c5 | 1 | 1 valid SAT model |
+| flat200-479 | 100 | 100 valid SAT models |
+| UUF100-430 | 1,000 | 1,000 expected UNSAT statuses |
+| UUF200-860 | 99 | 99 expected UNSAT statuses |
+| UUF250-1065 | 100 | 100 expected UNSAT statuses |
+| SAT Competition 2005 Industrial | 176 | 144 valid SAT models; 32 timeouts |
+
+Returned SAT assignments in these benchmarks were independently checked against the original CNF clauses. The UUF results represent expected UNSAT-status matches.
+
+## Multiplier Circuit Verification
+
+Parat successfully verified generated full-product multiplier circuits at these sizes:
+
+| Operand Size | Product Width | Recorded Verification Time |
+|---|---:|---:|
+| 16 × 16 bits | 32 bits | 0.13 seconds |
+| 32 × 32 bits | 64 bits | 0.74 seconds |
+| 64 × 64 bits | 128 bits | 4.40 seconds |
+| 128 × 128 bits | 256 bits | 6.32 seconds |
+| 256 × 256 bits | 512 bits | 13.89 seconds |
+| 512 × 512 bits | 1,024 bits | 26.71 seconds |
+
+The tested 512-bit-input multiplier contained 2,614,272 AND gates. Its outputs were independently compared with exact integer multiplication for 64 operand pairs. Several deliberately modified circuits were also rejected with counterexamples.
+
+## Additional Capabilities
+
+- **Graph colouring:** Tests on colourable graphs and selected unsatisfiable colourings.
+- **Constraint solving:** Generated Sudoku and pigeonhole-style instances.
+- **Factoring-related SAT:** Tested composite-number factor pairs, including 15 = 3 × 5 and larger semiprimes.
+- **Circuit equivalence:** Selected small adder and multiplier circuits.
+- **CNF processing:** DIMACS comments, multi-line clauses and parser edge cases.
+
+## Tested Input Formats
+
+- DIMACS CNF (`.cnf`)
+- ASCII AIGER (`.aag`) for selected circuit-verification tasks
+
+## Performance
+
+Reported runtimes were measured on the recorded test machine. Actual performance varies with the benchmark instance, circuit design, hardware and time limit.
 ## Quick start (Linux x86-64)
 
 ```
