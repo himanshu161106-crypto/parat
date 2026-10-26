@@ -1,8 +1,9 @@
-# v1.3, Oct 23 2026: hard yosys 0.69 netlists up to 256 bits, with certificates; macOS builds
+# v1.4, Oct 26 2026: hard yosys 0.69 netlists up to 256 bits, with certificates (Linux x86-64 only)
 
-**Download:** `bin/parat-linux-x86_64`, `bin/parat-windows-x86_64.exe`, and new `bin/parat-macos-arm64` (Apple
-silicon) and `bin/parat-macos-x86_64` (Intel Mac). Checksums in `SHA256SUMS`. The macOS files are cross-compiled and
-not yet run on a Mac by us; after download: `chmod +x` and `xattr -d com.apple.quarantine` (README, Quick start).
+**This release is Linux x86-64 only.**
+
+**Download:** `bin/parat-linux-x86_64` (static, needs nothing else). Checksum in `SHA256SUMS`. After download:
+`chmod +x bin/parat-linux-x86_64` (README, Quick start).
 
 ## New
 - Booth multipliers made by yosys 0.69 with its default ABC script minus the `&fraig -x` step (that step alone

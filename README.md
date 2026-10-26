@@ -20,7 +20,6 @@ This build is **Linux x86-64 only**: `parat-linux-x86_64`, static, needs nothing
 |---|---|---|---|
 | Solve a SAT formula (DIMACS CNF) | `parat file.cnf` | an answer, or "no answer" | check the model clause by clause yourself |
 | Prove "no answer" | `parat file.cnf --proof p.drat` | UNSAT + a DRAT proof | `drat-trim` |
-| Report a file's type before solving | `parat --detect-only file` | DIMACS CNF / ASCII AIGER / unsupported | — |
 | Prove a gate-level multiplier correct (`.aag`), unsigned or signed | `parat mult.aag 1 300` | CORRECT, or INCORRECT with a counterexample input | simulate the counterexample |
 | ... with a certificate | `parat mult.aag 1 300 --pac cert` | PAC certificate (`.polys`/`.proof`/`.spec`) | `pacheck2` |
 | Very large random 3-SAT (10,000+ variables) | `parat big.cnf` | an answer (this engine does not prove "no answer") | check the model clause by clause |
@@ -115,14 +114,11 @@ chmod +x parat-linux-x86_64
 # 1. solve a file
 ./parat-linux-x86_64 file.cnf
 
-# 2. check what kind of file it is before solving
-./parat-linux-x86_64 --detect-only file.cnf
-
-# 3. prove "no answer" with a checkable proof
+# 2. prove "no answer" with a checkable proof
 ./parat-linux-x86_64 file.cnf --proof proof.drat
 drat-trim file.cnf proof.drat        # -> s VERIFIED, independent checker
 
-# 4. prove a multiplier correct, with a certificate
+# 3. prove a multiplier correct, with a certificate
 ./parat-linux-x86_64 mult.aag 1 300 --pac cert
 pacheck cert.polys cert.proof cert.spec   # -> TARGET CHECKED, independent checker
 ```
@@ -154,11 +150,6 @@ Usage: parat circuit.aag 1 [time_limit_s] [--pac prefix] [--signed | --unsigned]
 - Output: `s CORRECT MULTIPLIER` or `s INCORRECT MULTIPLIER` with a counterexample (`a`, `b`, circuit output, `a × b`). Exit code `0` / `1`.
 - `--pac prefix` writes `prefix.polys`, `prefix.proof`, `prefix.spec` (Practical Algebraic Calculus) only when the answer is CORRECT. Nothing is written for a broken circuit.
 - Signed or unsigned: Parat decides by simulating the circuit; `--signed`/`--unsigned` force it.
-
-```
-Usage: parat --detect-only FILE
-```
-Reports the file's type (DIMACS CNF, ASCII AIGER, or unsupported) without solving it. Exit code `0` for a recognized/solver-supported type, `1`/`2` otherwise.
 
 ---
 
