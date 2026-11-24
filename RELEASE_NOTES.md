@@ -1,3 +1,24 @@
+# v1.5, Nov 24 2026: SAT Competition 2026 families; Windows, Linux and macOS builds
+
+**Downloads (Releases page):** windows-x64, windows-arm64, linux-x64, linux-arm64, macos-apple-silicon, macos-intel.
+Checksums in `SHA256SUMS.txt`. Windows x64 and Linux x64 were tested; the macOS and Windows-ARM builds are
+cross-compiled and not yet run on real hardware.
+
+## New
+- **Noisy-parity engine** (minimal/minimum-disagreement-parity): Gaussian elimination over GF(2) plus
+  information-set decoding; for UNSAT, the counter bound is confirmed by clause learning and every light secret is
+  enumerated and refuted. All 6 competition files in under 4 s; 3 of them were not solved by any competition solver.
+- **upsim engine**: circuits with up to ~40 inputs, gates read from unit propagation, every input value simulated
+  64 per word. 4 datapath-equivalence and 2 multiplier-equivalence files UNSAT in 0.8–93 s (competition best
+  284–1902 s).
+- CDCL: bounded variable addition before elimination (only when it removes at least 25% of the clauses), clause
+  shrinking on by default, local-search phases capped at 10% of the time.
+- 10 main-track files that no competition solver solved within 300 s are solved. Tables: `results/sc26_nov24/`.
+
+## Known limits
+- On general industrial files Kissat is ahead (61 files, 120 s: Kissat 37, Parat v1.5 25).
+- The noisy-parity and upsim UNSAT answers have no DRAT proof yet; in proof mode these engines are off.
+
 # v1.4, Oct 26 2026: hard yosys 0.69 netlists up to 256 bits, with certificates (Linux x86-64 only)
 
 **This release is Linux x86-64 only.**
