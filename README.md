@@ -14,6 +14,10 @@ arguments, and gate-level multipliers (proved correct up to 512 × 512 bits, wit
 
 ## Highlights of v1.5
 
+- **A 2048 × 2048-bit Wallace multiplier (42 million AND gates) proved correct in under 3 minutes** on one core of
+  a 7 GB machine (2 min 57 s, algebra 168 s; the part that does not fit in RAM goes to disk). With one wrong gate,
+  the answer is INCORRECT with a counterexample in about a minute (the check itself 1.7 s; the rest is reading the
+  1 GB file). Use the `W2048` build for this.
 - **SAT Competition 2026: 10 main-track files that no competition solver solved within 300 s** are solved by
   Parat v1.5. Three of them (minimum-disagreement-parity) were not solved by any solver at all.
 - **Noisy parity** (minimal/minimum-disagreement-parity): all 6 competition files in under 4 s; competition best was
@@ -37,6 +41,10 @@ Download from the **Releases** page.
 | `parat-v1.5-linux-arm64.zip` | Linux on ARM 64-bit, e.g. Raspberry Pi 4/5 with a 64-bit OS (static) |
 | `parat-v1.5-macos-apple-silicon.zip` | macOS on M1/M2/M3/M4 |
 | `parat-v1.5-macos-intel.zip` | macOS on Intel |
+| `parat-v1.5-W2048-windows-x64.exe` | Windows x64, multipliers up to 2048 bits (with `gen_mult.exe` and `test_2048.bat`) |
+| `parat-v1.5-W2048-linux-x64` | Linux x64, multipliers up to 2048 bits |
+
+The normal builds handle multipliers up to 128 bits; for wider ones use a `W2048` build.
 
 `SHA256SUMS.txt` lists the checksums. (`bin/parat-linux-x86_64` in this repository is the older v1.4.) The Windows x64 and Linux x64 builds are the ones tested in this README. The
 macOS and Windows-ARM builds were cross-compiled and have not been run on real hardware yet — please report problems.
@@ -140,7 +148,18 @@ The noisy-parity and upsim UNSAT answers come from normal mode; they do not come
 | SAT Competition 2005 Industrial | 176 | 144 valid SAT models, 32 timeouts |
 | Random 3-SAT, 50,000 variables, ratio 4.22 | 1 | solved in 36 s, model valid on all 211,000 clauses |
 
-### Multiplier verification (AIGER `.aag`)
+### Multiplier verification (AIGER `.aag` / `.aig`)
+
+v1.5, `W2048` build, Linux, one core, 7 GB RAM, Wallace designs from `gen_mult`:
+
+| operands | AND gates | answer | time |
+|---|---:|---|---:|
+| 256 × 256 bits | 0.66 M | CORRECT | 3.4 s |
+| 512 × 512 bits | 2.6 M | CORRECT | 8.9 s |
+| 512 × 512 bits, one gate wrong | 2.6 M | INCORRECT + counterexample | 0.1 s |
+| 2048 × 2048 bits | 42 M | CORRECT | 2 min 57 s |
+
+v1.4 (normal build):
 
 | operands | product | time |
 |---|---:|---:|
@@ -194,6 +213,8 @@ parat circuit.aag 1 [time_limit_s] [--pac prefix] [--signed | --unsigned]
 - Proof mode turns off the methods without a DRAT form yet (noisy parity, upsim, counting mod q, the algebraic
   multiplier method). Files only those solve end as "unknown" in proof mode, never as an unchecked UNSAT.
 - On general industrial files Parat is behind mature CDCL solvers (see the table above).
+- Normal builds: multipliers up to 128 bits; `W2048` builds up to 2048 bits (about 9 GB for 2048 bits, spilled to
+  disk when RAM is smaller). No PAC certificate was made for 2048 bits yet.
 - Multiplier mode handles unsigned and signed (two's complement) AND-inverter graphs, inputs `a` then `b`.
 - Certificates can be large (hundreds of MB at wide bit-widths).
 - The very-large random 3-SAT engine only finds answers; without one it ends as "unknown".

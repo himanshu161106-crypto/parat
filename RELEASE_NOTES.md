@@ -5,6 +5,8 @@ Checksums in `SHA256SUMS.txt`. Windows x64 and Linux x64 were tested; the macOS 
 cross-compiled and not yet run on real hardware.
 
 ## New
+- **2048-bit multipliers**: `W2048` builds (Windows x64, Linux x64). A 2048 × 2048-bit Wallace multiplier
+  (42 M AND gates) is proved CORRECT in 2 min 57 s on one core with 7 GB RAM; one wrong gate is found at once.
 - **Noisy-parity engine** (minimal/minimum-disagreement-parity): Gaussian elimination over GF(2) plus
   information-set decoding; for UNSAT, the counter bound is confirmed by clause learning and every light secret is
   enumerated and refuted. All 6 competition files in under 4 s; 3 of them were not solved by any competition solver.
