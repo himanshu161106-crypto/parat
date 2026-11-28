@@ -28,7 +28,7 @@ arguments, and gate-level multipliers (proved correct up to 512 × 512 bits, wit
 - **One program per system** (Windows, Linux, macOS; Intel/AMD and ARM). Each one is the whole solver and handles
   multipliers from 8 to 8192 bits, picking the number width by itself (tested up to 2048 bits).
 
-Details and per-file tables: [`results/sc26_nov24/`](results/sc26_nov24/).
+Details and per-file tables: [`results/v1.5_nov28/`](results/v1.5_nov28/) and [`results/sc26_nov24/`](results/sc26_nov24/).
 
 ---
 
