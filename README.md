@@ -45,7 +45,7 @@ Download from the **Releases** page — one file per system, nothing else needed
 | `parat-v1.5-macos-apple-silicon` | macOS on M1/M2/M3/M4 |
 | `parat-v1.5-macos-intel` | macOS on Intel |
 
-`SHA256SUMS.txt` lists the checksums. (`bin/parat-linux-x86_64` in this repository is the older v1.4.) The Windows
+`SHA256SUMS.txt` lists the checksums. The Windows
 x64 and Linux x64 programs were tested on real machines, Linux ARM64 under an emulator. The macOS and Windows-ARM
 programs were cross-compiled and have not been run on real hardware yet — please report problems.
 
