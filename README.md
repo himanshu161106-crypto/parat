@@ -14,16 +14,19 @@ arguments, and gate-level multipliers (proved correct up to 512 × 512 bits, wit
 
 ## Highlights of v1.5
 
-- **A 2048 × 2048-bit Wallace multiplier (42 million AND gates) proved correct in under 3 minutes** on one core of
-  a 7 GB machine (2 min 57 s, algebra 168 s; the part that does not fit in RAM goes to disk). With one wrong gate,
-  the answer is INCORRECT with a counterexample in about a minute (the check itself 1.7 s; the rest is reading the
-  1 GB file). Use the `W2048` build for this.
+- **A 2048 × 2048-bit Wallace multiplier (42 million AND gates) proved correct in about 3.5 minutes** on one CPU core
+  with 8 GB RAM (the part that does not fit in RAM goes to disk). A wrong gate gives INCORRECT with a counterexample
+  (tested up to 512 bits).
+- **Checkable certificates for big multipliers:** a 1024 × 1024-bit PAC certificate (13 GB, 3.1 million steps) was
+  checked piece by piece by the independent checker [pacheck](https://github.com/d-kfmnn/pacheck2):
+  CERTIFICATE CHECKED (see [Multiplier certificates](#multiplier-certificates)).
 - **SAT Competition 2026: 10 main-track files that no competition solver solved within 300 s** are solved by
   Parat v1.5. Three of them (minimum-disagreement-parity) were not solved by any solver at all.
-- **Noisy parity** (minimal/minimum-disagreement-parity): all 6 competition files in under 4 s; competition best was
-  730 s, 946 s, or not solved.
-- **Datapath and multiplier equivalence**: 6 files UNSAT in 0.8–93 s on a laptop; competition best 284–1902 s.
-- **Builds for Windows, Linux and macOS**, Intel/AMD and ARM.
+- **Noisy parity** (minimal/minimum-disagreement-parity): the 5 files that no other solver solved within 300 s take
+  0.06–4.5 s; competition best was 730 s, 946 s, or not solved.
+- **Datapath and multiplier equivalence**: 6 files UNSAT in 0.8–115 s on a laptop; competition best 284–1902 s.
+- **One program per system** (Windows, Linux, macOS; Intel/AMD and ARM). Each one is the whole solver and handles
+  multipliers from 8 to 8192 bits, picking the number width by itself (tested up to 2048 bits).
 
 Details and per-file tables: [`results/sc26_nov24/`](results/sc26_nov24/).
 
@@ -31,29 +34,26 @@ Details and per-file tables: [`results/sc26_nov24/`](results/sc26_nov24/).
 
 ## Downloads
 
-Download from the **Releases** page.
+Download from the **Releases** page — one file per system, nothing else needed:
 
 | file | system |
 |---|---|
-| `parat-v1.5-windows-x64.zip` | Windows 10/11, Intel/AMD 64-bit |
-| `parat-v1.5-windows-arm64.zip` | Windows on ARM (Snapdragon laptops) |
-| `parat-v1.5-linux-x64.zip` | Linux, Intel/AMD 64-bit (static, needs nothing else) |
-| `parat-v1.5-linux-arm64.zip` | Linux on ARM 64-bit, e.g. Raspberry Pi 4/5 with a 64-bit OS (static) |
-| `parat-v1.5-macos-apple-silicon.zip` | macOS on M1/M2/M3/M4 |
-| `parat-v1.5-macos-intel.zip` | macOS on Intel |
-| `parat-v1.5-W2048-windows-x64.exe` | Windows x64, multipliers up to 2048 bits (with `gen_mult.exe` and `test_2048.bat`) |
-| `parat-v1.5-W2048-linux-x64` | Linux x64, multipliers up to 2048 bits |
+| `parat-v1.5-windows-x64.exe` | Windows 10/11, Intel/AMD 64-bit |
+| `parat-v1.5-windows-arm64.exe` | Windows on ARM (Snapdragon laptops) |
+| `parat-v1.5-linux-x64` | Linux, Intel/AMD 64-bit (static) |
+| `parat-v1.5-linux-arm64` | Linux on ARM 64-bit, e.g. Raspberry Pi 4/5 with a 64-bit OS (static) |
+| `parat-v1.5-macos-apple-silicon` | macOS on M1/M2/M3/M4 |
+| `parat-v1.5-macos-intel` | macOS on Intel |
 
-The normal builds handle multipliers up to 128 bits; for wider ones use a `W2048` build.
+`SHA256SUMS.txt` lists the checksums. (`bin/parat-linux-x86_64` in this repository is the older v1.4.) The Windows
+x64 and Linux x64 programs were tested on real machines, Linux ARM64 under an emulator. The macOS and Windows-ARM
+programs were cross-compiled and have not been run on real hardware yet — please report problems.
 
-`SHA256SUMS.txt` lists the checksums. (`bin/parat-linux-x86_64` in this repository is the older v1.4.) The Windows x64 and Linux x64 builds are the ones tested in this README. The
-macOS and Windows-ARM builds were cross-compiled and have not been run on real hardware yet — please report problems.
-
-On macOS the binary is not signed by Apple. After unzipping, once:
+On macOS the program is not signed by Apple. Once, after downloading:
 
 ```
-xattr -d com.apple.quarantine parat
-chmod +x parat
+xattr -d com.apple.quarantine parat-v1.5-macos-*
+chmod +x parat-v1.5-macos-*
 ```
 
 ---
@@ -63,18 +63,19 @@ chmod +x parat
 Windows (Command Prompt or PowerShell):
 
 ```
-parat.exe file.cnf
-parat.exe file.cnf 0 300          (seed 0, time limit 300 s)
+parat-v1.5-windows-x64.exe file.cnf
+parat-v1.5-windows-x64.exe file.cnf 0 300          (seed 0, time limit 300 s)
 ```
 
 Linux / macOS:
 
 ```
-./parat file.cnf
-./parat file.cnf --proof proof.drat      # UNSAT with a DRAT proof
-drat-trim file.cnf proof.drat            # -> s VERIFIED, independent checker
-./parat mult.aag 1 300 --pac cert        # prove a multiplier correct, with a certificate
-pacheck cert.polys cert.proof cert.spec  # -> TARGET CHECKED, independent checker
+./parat-v1.5-linux-x64 file.cnf
+./parat-v1.5-linux-x64 file.cnf --proof proof.drat   # UNSAT with a DRAT proof
+drat-trim file.cnf proof.drat                        # -> s VERIFIED, independent checker
+./parat-v1.5-linux-x64 mult.aig 1 300 --pac cert     # prove a multiplier correct, with a certificate
+pacheck cert.polys cert.proof cert.spec              # -> TARGET CHECKED (small certificates)
+python3 pac_verify.py mult.aig cert                  # -> s CERTIFICATE CHECKED (any size, piece by piece)
 ```
 
 Output follows the SAT Competition format: `s ...` and `v ...` lines. Exit code `10` = SAT, `20` = UNSAT,
@@ -150,7 +151,7 @@ The noisy-parity and upsim UNSAT answers come from normal mode; they do not come
 
 ### Multiplier verification (AIGER `.aag` / `.aig`)
 
-v1.5, `W2048` build, Linux, one core, 7 GB RAM, Wallace designs from `gen_mult`:
+v1.5, Linux, one core, 7–8 GB RAM, Wallace designs from `gen_mult`:
 
 | operands | AND gates | answer | time |
 |---|---:|---|---:|
@@ -187,6 +188,36 @@ Older result files are in [`results/`](results/); benchmark files and generators
 
 ---
 
+## Multiplier certificates
+
+`--pac cert` writes a PAC certificate (`cert.polys`, `cert.proof`, `cert.spec`). Small ones can be checked directly
+with `pacheck`. Big ones are checked piece by piece with
+[`tools/pac_verify.py`](tools/pac_verify.py) (Python 3, standard library only) and `pacheck`:
+
+```
+PARAT_PAC_CHK=600000000 PARAT_PAC_CHKMAX=600000000 ./parat-v1.5-linux-x64 w1024.aig 1 100000 --pac cert
+python3 tools/pac_verify.py w1024.aig cert --pacheck ./pacheck --jobs 2
+```
+
+`pac_verify.py` does not trust anything Parat wrote:
+
+1. It builds every gate polynomial and the spec (sum 2^k s_k - sum 2^(i+j) a_i b_j) from the AIGER file itself and
+   compares Parat's `.polys` / `.spec` with them.
+2. It cuts the proof into pieces; pacheck checks every step of every piece. A piece may only use lines of `.polys` or
+   lines of earlier pieces.
+3. The last step must give exactly the spec.
+
+| certificate | size | pieces | check time | largest pacheck |
+|---|---:|---:|---:|---:|
+| 512 × 512 bits | 1.1 GB | 7 | 97 s | 1.6 GB |
+| 1024 × 1024 bits | 13.2 GB | 49 | 12.7 min | 1.6 GB |
+
+Twelve kinds of deliberate errors (a changed step, spec, gate or polys line, a missing or extra line, another rule, a
+writer stopped half way, ...) were all rejected. `--follow` checks while Parat is still writing; `--jobs N` checks N
+pieces at the same time.
+
+---
+
 ## Command line
 
 ```
@@ -213,8 +244,8 @@ parat circuit.aag 1 [time_limit_s] [--pac prefix] [--signed | --unsigned]
 - Proof mode turns off the methods without a DRAT form yet (noisy parity, upsim, counting mod q, the algebraic
   multiplier method). Files only those solve end as "unknown" in proof mode, never as an unchecked UNSAT.
 - On general industrial files Parat is behind mature CDCL solvers (see the table above).
-- Normal builds: multipliers up to 128 bits; `W2048` builds up to 2048 bits (about 9 GB for 2048 bits, spilled to
-  disk when RAM is smaller). No PAC certificate was made for 2048 bits yet.
+- Multipliers up to 8192 x 8192 bits in one program (tested up to 2048 bits; about 9 GB for 2048 bits, the rest
+  spilled to disk; 4096 and 8192 bits need far more memory).
 - Multiplier mode handles unsigned and signed (two's complement) AND-inverter graphs, inputs `a` then `b`.
 - Certificates can be large (hundreds of MB at wide bit-widths).
 - The very-large random 3-SAT engine only finds answers; without one it ends as "unknown".
