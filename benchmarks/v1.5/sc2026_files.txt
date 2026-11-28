@@ -1,0 +1,12 @@
+# SAT Competition 2026 main-track files solved by Parat v1.5 that no competition solver solved within 300 s
+# (download: the competition's benchmark database; each file is xz-compressed CNF)
+http://benchmark-database.de/file/1eea3d913d346b900252d77fc0cb25c8   minimal-disagreement-parity      SAT
+http://benchmark-database.de/file/61fee64c8fc7f05b97a2bc14c0c2bf41   minimal-disagreement-parity      SAT
+http://benchmark-database.de/file/16ca57f2cdffd5b0260fc771017e1f04   minimum-disagreement-parity      UNSAT
+http://benchmark-database.de/file/23daec2c71ce3c1e346e6042f3dc42eb   minimum-disagreement-parity      UNSAT
+http://benchmark-database.de/file/425c81fc3af7f5124b6282583d80df11   minimum-disagreement-parity      UNSAT
+http://benchmark-database.de/file/27495ba0093076d2e39a9b218e521ee2   datapath-equivalence-checking    UNSAT
+http://benchmark-database.de/file/2a38c5d48846ee1c35c4c40938082a16   datapath-equivalence-checking    UNSAT
+http://benchmark-database.de/file/5ab5ac8d66c7e375037f12a536baf721   datapath-equivalence-checking    UNSAT
+http://benchmark-database.de/file/e685a5d96e1ee9e051f191eca84b0d88   datapath-equivalence-checking    UNSAT
+http://benchmark-database.de/file/de8c42d50f1dbf43a731f1916dc6bf01   multiplier-equivalence-checking  UNSAT
