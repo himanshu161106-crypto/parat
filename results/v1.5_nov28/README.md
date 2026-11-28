@@ -23,7 +23,7 @@ The same 2048-bit file was proved on the user's 16 GB Windows laptop earlier in 
 |---|---:|---:|---:|---:|---:|---|
 | 512 × 512 bits | 71 s | 1.1 GB | 7 | 97 s | 1.6 GB | CERTIFICATE CHECKED |
 | 1024 × 1024 bits | 16.5 min | 7.7 GB | 20 | 8.7 min | 3.4 GB | CERTIFICATE CHECKED |
-| 1024 × 1024 bits (600 MB checkpoints off, 100 MB on) | 13.9 min | 13.2 GB | 49 | 12.7 min | 1.6 GB | CERTIFICATE CHECKED |
+| 1024 × 1024 bits, checkpoints every 100 MB | 13.9 min | 13.2 GB | 49 | 12.7 min | 1.6 GB | CERTIFICATE CHECKED |
 | 512 × 512 bits, written and checked at the same time (`--follow --jobs 3`) | — | — | 35 | 2 min 43 s in all | 0.4 GB | CERTIFICATE CHECKED |
 
 Also checked: Wallace, Booth and array multipliers (8–64 bits), and certificates written by the Windows program and
